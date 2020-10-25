@@ -19,7 +19,7 @@
         </thead>
         <tbody>
             <tr th:if="${users.empty}">
-                <td colspan="8"> No Users Available </td>
+                <td colspan="9"> No Users Available </td>
             </tr>
             <tr th:each="user, iterStat : ${users}">
                 <td th:text="${iterStat.index} + 1">#</td>
