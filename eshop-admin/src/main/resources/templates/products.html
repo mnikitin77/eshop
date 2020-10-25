@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head.html :: common_head_block(~{::title})">
+    <title>products | eshop management</title>
+</head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments/header :: common_header_block"></nav>
+
+<div class="d-flex">
+
+    <div th:replace="fragments/leftmenu :: common_left_menu_block(${'Products'}, ${'Content'})"></div>
+
+    <div class="content p-4">
+        <h2 class="mb-4">Products</h2>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                tbd.
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

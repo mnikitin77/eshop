@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
+    <nav th:fragment="common_header_block" class="navbar navbar-expand navbar-dark bg-primary">
+        <a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars"></i></a>
+        <a class="navbar-brand" href="#">eshop management console</a>
+            
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i>&nbsp;&nbsp;<span sec:authentication="principal.username"></span></a>                
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">                                                                            
+                            <a href="#" th:href="@{/logout}" class="dropdown-item">Log out</a>
+                        </div>
+                </li>            
+            </ul>
+        </div>
+    
+    </nav>
+
+</html>
