@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head.html :: common_head_block(~{::title})">
+    <title>admins | eshop management</title>
+</head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments/header :: common_header_block"></nav>
+
+<div class="d-flex">
+
+    <div th:replace="fragments/leftmenu :: common_left_menu_block(${'Administrators'}, ${'Users'})"></div>
+
+    <div class="content p-4">
+        <h2 class="mb-4">Administrators</h2>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <table th:replace="fragments/users_table :: users_table_block(${users})" id="example" class="table table-hover" cellspacing="0" width="100%"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#userstable').DataTable();
+    });
+</script>
+
+</body>
+</html>

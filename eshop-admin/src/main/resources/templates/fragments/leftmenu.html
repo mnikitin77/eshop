@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
+
+    <div th:fragment="common_left_menu_block(page, parent)" class="sidebar sidebar-dark bg-dark">
+        <ul class="list-unstyled">
+            <li>
+                <a href="#sm_expand_users" data-toggle="collapse" th:aria-expanded="${parent == 'Users'} ? 'true' : 'false'">
+                    Users
+                </a>
+                <ul id="sm_expand_users" class="list-unstyled collapse" th:classappend="${parent == 'Users'} ? 'show'">
+                    <li><a href="#" th:href="@{${page != 'Administrators'} ? '/admins' : '#'}" th:classappend="${page == 'Administrators'} ? 'active'">Administrators</a></li>
+                    <li><a href="#" th:href="@{${page != 'Clients'} ? '/clients' : '#'}" th:classappend="${page == 'Clients'} ? 'active'">Clients</a></li>                
+                </ul>
+            </li>
+            <li>
+                <a href="#sm_expand_content" data-toggle="collapse" th:aria-expanded="${parent == 'Content'} ? 'true' : 'false'">
+                    Content
+                </a>
+                <ul id="sm_expand_content" class="list-unstyled collapse" th:classappend="${parent == 'Content'} ? 'show'">
+                    <li><a href="#" th:href="@{${page != 'Categories'} ? '/categories' : '#'}" th:classappend="${page == 'Categories'} ? 'active'">Categories</a></li>
+                    <li><a href="#" th:href="@{${page != 'Brands'} ? '/brands' : '#'}" th:classappend="${page == 'Brands'} ? 'active'">Brands</a></li>
+                    <li><a href="#" th:href="@{${page != 'Products'} ? '/products' : '#'}" th:classappend="${page == 'Products'} ? 'active'">Products</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+</html>
