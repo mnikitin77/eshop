@@ -15,11 +15,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
-    private UserDetailsService userService;
+    private UserDetailsService userAuthService;
 
     @Autowired
-    public void setUserService(UserDetailsService userService) {
-        this.userService = userService;
+    public void setUserAuthService(UserDetailsService userAuthService) {
+        this.userAuthService = userAuthService;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userService);
+        auth.setUserDetailsService(userAuthService);
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
