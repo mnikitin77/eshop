@@ -1,9 +1,10 @@
-package com.mvnikitin.eshop.entities;
+package com.mvnikitin.eshop.model;
 
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Entity
@@ -34,4 +35,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @OneToMany(mappedBy = "product",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Image> images;
 }

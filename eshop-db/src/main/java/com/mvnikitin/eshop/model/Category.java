@@ -1,4 +1,4 @@
-package com.mvnikitin.eshop.entities;
+package com.mvnikitin.eshop.model;
 
 import lombok.Data;
 
@@ -6,8 +6,8 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "categories")
+public class Category {
 
     @Id
     @Column(columnDefinition = "serial")
@@ -16,4 +16,8 @@ public class Role {
 
     @Column
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Category parent;
 }

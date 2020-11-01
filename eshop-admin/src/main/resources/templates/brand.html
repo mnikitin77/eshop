@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head.html :: common_head_block(~{::title})">
+    <title>brand | eshop management</title>
+</head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments/header :: common_header_block"></nav>
+
+<div class="d-flex">
+
+    <div th:replace="fragments/leftmenu :: common_left_menu_block(${'Brands'}, ${'Content'})"></div>
+
+    <div class="content p-4">
+        <h2 th:if="${brand.name} != null" class="mb-4"  th:text="${'Edit [' + brand.name + '], id: ' + brand.id}">brand</h2>
+        <h2 th:if="${brand.name} == null" class="mb-4">New Brand</h2>
+
+        <div class="card mb-4">
+
+            <div class="card mb-4">                
+                <div class="card-body">
+                    <form id="brand-form" th:action="@{/brand}" th:object="${brand}" method="POST">
+
+                        <!-- Important -->
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="form-group">
+                            <div class="col-md-4 mb-3">
+                                <label for="brand">Brand:</label>
+                                <input type="text" class="form-control" id="brand" th:field="*{name}" required>
+                            </div>                                                        
+                        </div>                                   
+
+                    </form>
+                </div>
+                <div class="card-footer bg-white">                    
+                    <button type="submit" form="brand-form" class="btn btn-primary btn-lg btn-pill">OK</button>
+                    <button type="reset" form="brand-form" class="btn btn-secondary btn-lg btn-pill">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

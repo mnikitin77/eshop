@@ -4,10 +4,11 @@ import com.mvnikitin.eshop.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class AdminsController {
+@RequestMapping("/users")
+public class UsersController {
 
     private UserService userService;
 
@@ -16,9 +17,9 @@ public class AdminsController {
         this.userService = userService;
     }
 
-    @GetMapping("/admins")
+    @GetMapping
     public String show(Model model) {
-        model.addAttribute("users", userService.findAllAdmins());
-        return "admins";
+        model.addAttribute("users", userService.findAll());
+        return "users";
     }
 }
