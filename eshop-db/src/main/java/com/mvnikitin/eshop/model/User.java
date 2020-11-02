@@ -1,4 +1,4 @@
-package com.mvnikitin.eshop.entities;
+package com.mvnikitin.eshop.model;
 
 import lombok.Data;
 

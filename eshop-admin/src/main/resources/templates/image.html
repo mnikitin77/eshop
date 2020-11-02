@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head.html :: common_head_block(~{::title})">
+    <title>image | eshop management</title>
+</head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments/header :: common_header_block"></nav>
+
+<div class="d-flex">
+
+    <div th:replace="fragments/leftmenu :: common_left_menu_block(${'Products'}, ${'Content'})"></div>
+
+    <div class="content p-4">
+        <h2 class="mb-4" th:text="${'Edit [' + image.originalName + '], id: ' + image.id}">image</h2>
+
+        <div class="card mb-4">
+
+            <div class="card mb-4">                
+                <div class="card-body">
+                    <form id="image-form" th:action="@{/image}" th:object="${image}" method="POST">
+
+                        <!-- Important -->
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="form-group">
+                            <div class="col-md-4 mb-3">
+                                <label for="name">Name:</label>
+                                <input type="text" disabled class="form-control" id="name" th:field="*{originalName}">
+                            </div>                                                        
+                        </div>                                   
+                        <div class="form-group">
+                            <div class="col-md-4 mb-3">
+                                <label for="sysname">System name:</label>
+                                <input type="text" disabled class="form-control" id="sysname" th:field="*{name}">
+                            </div>                                                        
+                        </div>                                   
+                        <div class="form-group">
+                            <div class="col-md-4 mb-3">
+                                <label for="descr">Description:</label>
+                                <input type="text" class="form-control" id="descr" th:field="*{description}">
+                            </div>                                                        
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input th:field="*{selected}" class="form-check-input" type="checkbox" id="primary">
+                                <label class="form-check-label" for="primary">
+                                    Primary
+                                </label>
+                            </div>
+                        </div>                        
+                        <div class="form-group">
+                            <div class="col-md-4 mb-3">
+                                <label for="size">Size (bytes):</label>
+                                <input type="text" disabled class="form-control" id="size" th:field="*{size}">
+                            </div>                                                        
+                        </div>
+
+                    </form>
+                </div>
+                <div class="card-footer bg-white">                    
+                    <button type="submit" form="image-form" class="btn btn-primary btn-lg btn-pill">OK</button>
+                    <button type="reset" form="image-form" class="btn btn-secondary btn-lg btn-pill">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 package com.mvnikitin.eshop.services;
 
-import com.mvnikitin.eshop.entities.Role;
-import com.mvnikitin.eshop.entities.User;
+import com.mvnikitin.eshop.model.Role;
+import com.mvnikitin.eshop.model.User;
 import com.mvnikitin.eshop.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

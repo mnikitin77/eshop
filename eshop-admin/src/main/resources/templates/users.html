@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head.html :: common_head_block(~{::title})">
+    <title>users | eshop management</title>
+</head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments/header :: common_header_block"></nav>
+
+<div class="d-flex">
+
+    <div th:replace="fragments/leftmenu :: common_left_menu_block(${'Users'}, ~{})"></div>
+
+    <div class="content p-4">
+        <h2 class="mb-4">Users</h2>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <table id="userstable" class="table table-hover" cellspacing="0" width="100%">
+                    <thead>                        
+                        <tr>
+                            <th>##</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th class="actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${users.empty}">
+                            <gtd colspan="9"> No Users Available </gtd>
+                        </tr>
+                        <tr th:each="user, iterStat : ${users}">                
+                            <td th:text="${iterStat.index} + 1">#</td>
+                            <td>            
+                                [[${user.username}]]
+                                <span th:if="${user.isAdmin()}" class="badge badge-info">adm</span>
+                            </td>
+                            <td th:text="${user.showRoles()}">Role</td>
+                            <td th:text="${user.firstName}">First Name</td>
+                            <td th:text="${user.middleName}">Middle Name</td>
+                            <td th:text="${user.lastName}">Last Name</td>
+                            <td th:text="${user.phone}">Phone</td>
+                            <td th:text="${user.email}">Email</td>
+                            <td th:if="${user.isBlocked} == false"><span class="badge badge-success">active</span></td>
+                            <td th:if="${user.isBlocked} == true"><span class="badge badge-danger">blocked</span></td>
+                            <td>  
+                                <a href="#" th:href="@{/user/{id}(id = ${user.id})}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="Edit"><i class="fa fa-fw fa-edit"></i></a>                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#userstable').DataTable();
+    });
+</script>
+
+</body>
+</html>
