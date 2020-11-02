@@ -17,7 +17,7 @@ public class BrandsController {
     }
 
     @GetMapping("/brands")
-    public String show(Model model) {
+    public String show() {
         return "brands";
     }
 }

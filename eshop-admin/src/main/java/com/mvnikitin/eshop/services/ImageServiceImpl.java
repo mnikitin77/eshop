@@ -7,9 +7,14 @@ import com.mvnikitin.eshop.mappers.ProductMapper;
 import com.mvnikitin.eshop.model.Image;
 import com.mvnikitin.eshop.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -17,6 +22,9 @@ public class ImageServiceImpl implements ImageService {
     private ImageRepository imageRepository;
     private ImageMapper imageMapper;
     private ProductMapper productMapper;
+
+    @Value("${eshop-admin.file.storage}")
+    private String fileStorage;
 
     @Autowired
     public void setImageRepository(ImageRepository imageRepository) {
@@ -42,11 +50,20 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void deleteById(Integer id) {
+    @Transactional
+    public void deleteById(Integer id) throws IOException {
+
+        ImageDTO imageDTO = findById(id);
+
         imageRepository.deleteById(id);
+
+        if (imageDTO != null) {
+            Files.delete(Paths.get(fileStorage, imageDTO.getName()));
+        }
     }
 
     @Override
+    @Transactional
     public ImageDTO save(ImageDTO imageDTO) throws IOException {
 
         Image image = imageRepository.findById(imageDTO.getId()).orElseThrow(

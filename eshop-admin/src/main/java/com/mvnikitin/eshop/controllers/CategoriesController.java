@@ -19,7 +19,7 @@ public class CategoriesController {
     }
 
     @GetMapping
-    public String show(Model model) {
+    public String show() {
         return "categories";
     }
 }

@@ -38,8 +38,7 @@ public class CategoryFormController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public String delete(@PathVariable(value = "id") Integer id,
-                         Model model) {
+    public String delete(@PathVariable(value = "id") Integer id) {
         categoryService.deleteById(id);
         return "redirect:/categories";
     }

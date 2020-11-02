@@ -40,8 +40,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public String delete(@PathVariable(value = "id") Integer id,
-                         Model model) {
+    public String delete(@PathVariable(value = "id") Integer id) {
         productService.deleteById(id);
         return "redirect:/products";
     }

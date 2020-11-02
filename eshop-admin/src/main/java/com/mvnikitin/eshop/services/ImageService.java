@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public interface ImageService {
     ImageDTO findById(Integer id);
-    void deleteById(Integer id);
+    void deleteById(Integer id) throws IOException;
     ImageDTO save(ImageDTO imageDTO) throws IOException;
 }

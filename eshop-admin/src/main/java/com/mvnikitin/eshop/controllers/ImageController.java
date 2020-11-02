@@ -63,7 +63,7 @@ public class ImageController {
 
     @DeleteMapping("/{id}/product/{productId}/delete")
     public String delete(@PathVariable(value = "id") Integer id,
-                         @PathVariable(value = "productId") Integer productId) {
+                         @PathVariable(value = "productId") Integer productId) throws IOException {
         imageService.deleteById(id);
         return "redirect:/product/" + productId;
     }

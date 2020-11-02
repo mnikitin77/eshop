@@ -38,8 +38,7 @@ public class BrandFormController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public String delete(@PathVariable(value = "id") Integer id,
-                         Model model) {
+    public String delete(@PathVariable(value = "id") Integer id) {
         brandService.deleteById(id);
         return "redirect:/brands";
     }
