@@ -25,4 +25,6 @@ public interface ImageMapper {
     @Mapping(target = "size", ignore = true)
     @Mapping(target = "contentType", ignore = true)
     void updateDescriptionAndSelectedFromImageDTO(ImageDTO imageDTO, @MappingTarget Image image);
+
+    void imageToImageDTOwithProduct(Image image, @MappingTarget ImageDTO imageDTO);
 }

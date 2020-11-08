@@ -22,7 +22,10 @@ public class ProductController {
 
     @GetMapping
     public String show(Model model) {
-        model.addAttribute("product", new ProductDTO());
+        ProductDTO productDTO = new ProductDTO();
+        // Setting the "active" atribute to be true in the database
+        productDTO.setIsActive(true);
+        model.addAttribute("product", productDTO);
         return "product";
     }
 
@@ -40,7 +43,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public String delete(@PathVariable(value = "id") Integer id) {
+    public String delete(@PathVariable(value = "id") Integer id) throws IOException {
         productService.deleteById(id);
         return "redirect:/products";
     }

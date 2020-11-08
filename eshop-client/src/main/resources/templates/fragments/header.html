@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
+    <nav th:fragment="common_header_block" class="navbar navbar-expand navbar-dark bg-primary">
+        <a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars"></i></a>
+        <a class="navbar-brand" href="#">eshop management console</a>
+            
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav ml-auto">
+                <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                    <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i>&nbsp;&nbsp;                                                
+                            <span sec:authentication="principal.username"></span>
+                    </a>                
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">                                                                            
+                            <a href="#" th:href="@{/logout}" class="dropdown-item">Log out</a>
+                        </div>
+                </li>            
+            </ul>
+        </div>
+    
+    </nav>
+
+    <!-- Start Header Area -->
+	<header  th:fragment="cli_header_block(page)" class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<a class="navbar-brand logo_h" href="index.html"><img th:src="@{/img/logo.png}" alt=""></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item" th:classappend="${page == 'home'} ? 'active'"><a class="nav-link" th:href="@{/}">Home</a></li>
+							<li class="nav-item" th:classappend="${page == 'shop'} ? 'active'"><a class="nav-link" th:href="@{/shop}">Shop</a></li>
+							<!-- <li class="nav-item submenu dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Shop</a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
+									<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
+									<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
+									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
+									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+								</ul>
+							</li> -->							
+							<li class="nav-item"><a class="nav-link" th:href="contact.html">Contact</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+							<li class="nav-item">
+								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+		<div class="search_input" id="search_input_box">
+			<div class="container">
+				<form class="d-flex justify-content-between">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div>
+	</header>
+	<!-- End Header Area -->
+
+</html>

@@ -2,8 +2,10 @@ package com.mvnikitin.eshop.services;
 
 import com.mvnikitin.eshop.dto.CategoryDTO;
 import com.mvnikitin.eshop.mappers.CategoryMapper;
+import com.mvnikitin.eshop.model.Category;
 import com.mvnikitin.eshop.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +37,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> findAll() {
+
+        Sort sort = Sort.sort(Category.class)
+                .by("name").ascending();
+
         return categoryMapper.categoriesToCategoryDTOs(
-                categoryRepository.findAll());
+                categoryRepository.findAll(sort));
     }
 
     @Override

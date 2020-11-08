@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head th:replace="fragments/head.html :: cli_head_block(~{::title})">
+	<title>eshop</title>
+</head>
+
+<body>
+
+	<!-- Start Header Area -->
+	<header  th:replace="fragments/header.html :: cli_header_block(${'home'})" class="header_area sticky-header"></header>
+	<!-- End Header Area -->
+
+	<!-- start banner Area -->
+	<section class="banner-area">
+		<div class="container">
+			<div class="row fullscreen align-items-center justify-content-start">
+				<div class="col-lg-12">
+					<!-- <div class="active-banner-slider owl-carousel"> -->
+						<!-- single-slide -->
+						<div class="row single-slide align-items-center d-flex">
+							<div class="col-lg-5 col-md-6">
+								<div class="banner-content">
+									<h1>Food is <br>Here...</h1>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+									<div class="add-bag d-flex align-items-center">
+										<!-- <a class="add-btn" href=""><span class="lnr lnr-cross"></span></a>
+										<span class="add-text text-uppercase">Add to Bag</span> -->
+										<a th:href="@{/shop}" class="primary-btn">Shop Now</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-7">
+								<div class="banner-img">
+									<img class="img-fluid" th:src="@{/img/food.jpg}" alt="">
+								</div>
+							</div>
+						</div>
+					<!-- </div> -->
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End banner Area -->
+
+	<!-- start footer Area -->
+	<footer th:replace="fragments/footer.html :: cli_footer_block"></footer>
+	<!-- End footer Area -->
+
+
+	<div th:replace="fragments/scripts.html :: cli_scripts_block"></div>
+
+</body>
+
+</html>

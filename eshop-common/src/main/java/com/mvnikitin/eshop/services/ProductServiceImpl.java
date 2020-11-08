@@ -1,7 +1,7 @@
 package com.mvnikitin.eshop.services;
 
+import com.mvnikitin.eshop.dto.ImageDTO;
 import com.mvnikitin.eshop.dto.ProductDTO;
-import com.mvnikitin.eshop.mappers.ImageMapper;
 import com.mvnikitin.eshop.mappers.ProductMapper;
 import com.mvnikitin.eshop.model.Image;
 import com.mvnikitin.eshop.model.Product;
@@ -24,9 +24,10 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
     private ProductMapper productMapper;
-    private ImageMapper imageMapper;
+    private ImageService imageService;
 
-    @Value("${eshop-admin.file.storage}")
+
+    @Value("${eshop.file.storage}")
     private String fileStorage;
 
     @Autowired
@@ -35,8 +36,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Autowired
-    public void setImageMapper(ImageMapper imageMapper) {
-        this.imageMapper = imageMapper;
+    public void setImageService(ImageService imageService) {
+        this.imageService = imageService;
     }
 
     @Autowired
@@ -56,6 +57,12 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> findAll() {
         return productMapper.productsToProductDTOs(
                 productRepository.findAll());
+    }
+
+    @Override
+    public List<ProductDTO> findAllActive() {
+        return productMapper.productsToProductDTOs(
+                productRepository.findAllByIsActive(true));
     }
 
     @Override
@@ -96,8 +103,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void deleteById(Integer id) {
+    public void deleteById(Integer id) throws IOException {
+        // Deleting images manually in order
+        // to remove the image files.
+        ProductDTO productDTO = findById(id);
+        for (ImageDTO imageDTO: productDTO.getImages()) {
+            imageService.deleteById(imageDTO.getId());
+        }
         productRepository.deleteById(id);
     }
-
 }

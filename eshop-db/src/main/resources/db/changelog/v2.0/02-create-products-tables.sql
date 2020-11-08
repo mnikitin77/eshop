@@ -45,7 +45,9 @@ CREATE TABLE products
 	brand_id integer NOT NULL,
 	code character varying(20) NOT NULL,
 	name character varying(255) NOT NULL,
+	description character varying(4000),
 	price decimal(15,2) NOT NULL,
+	old_price decimal(15,2),
 	active boolean NOT NULL,
     CONSTRAINT products_pk PRIMARY KEY (id),
 	CONSTRAINT fk_products_categories FOREIGN KEY (category_id)

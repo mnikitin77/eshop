@@ -22,8 +22,14 @@ public class Product {
     @Column
     private String name;
 
+    @Column
+    private String description;
+
     @Column(precision = 15, scale = 2)
     private BigDecimal price;
+
+    @Column(name = "old_price", precision = 15, scale = 2)
+    private BigDecimal oldPrice;
 
     @Column(name = "active")
     private Boolean isActive;

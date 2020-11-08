@@ -83,9 +83,15 @@
                     </form>
                 </div>
                 <div class="card-footer bg-white">                    
-                    <button type="submit" form="user-form" class="btn btn-primary btn-lg btn-pill">OK</button>
-                    <button type="reset" form="user-form" class="btn btn-secondary btn-lg btn-pill">Cancel</button>
+                    <div class="col-md-4 mb-3 d-flex flex-row justify-content-between font-weight-bold">
+                        <div>
+                            <button type="submit" form="user-form" class="btn btn-primary btn-sm btn-pill">OK</button>
+                            <a href="#" th:href="@{/users}" class="btn btn-sm btn-pill btn-secondary">Cancel</a>
+                        </div>
+                        <button type="reset" form="user-form" class="btn btn-warning btn-sm btn-pill">Reset</button>
+                    </div>
                 </div>
+                
             </div>
         </div>
     </div>

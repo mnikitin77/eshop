@@ -8,6 +8,7 @@ import java.util.List;
 public interface ProductService {
     ProductDTO findById(Integer id);
     List<ProductDTO> findAll();
+    List<ProductDTO> findAllActive();
     ProductDTO save(ProductDTO productDTO) throws IOException;
-    void deleteById(Integer id);
+    void deleteById(Integer id) throws IOException;
 }

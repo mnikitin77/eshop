@@ -6,15 +6,17 @@ import com.mvnikitin.eshop.mappers.ImageMapper;
 import com.mvnikitin.eshop.mappers.ProductMapper;
 import com.mvnikitin.eshop.model.Image;
 import com.mvnikitin.eshop.repositories.ImageRepository;
+import com.mvnikitin.eshop.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -22,8 +24,9 @@ public class ImageServiceImpl implements ImageService {
     private ImageRepository imageRepository;
     private ImageMapper imageMapper;
     private ProductMapper productMapper;
+    private ProductRepository productRepository;
 
-    @Value("${eshop-admin.file.storage}")
+    @Value("${eshop.file.storage}")
     private String fileStorage;
 
     @Autowired
@@ -41,25 +44,40 @@ public class ImageServiceImpl implements ImageService {
         this.productMapper = productMapper;
     }
 
+    @Autowired
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
     @Override
     public ImageDTO findById(Integer id) {
-        return imageMapper.imageToImageDTO(
-                imageRepository.findById(id).orElseThrow(() ->
+
+        Image image = imageRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Image [id:" +
-                        id + "] not found")));
+                        id + "] not found"));
+        ProductDTO productDTO =
+                productMapper.productToProductDTO(image.getProduct());
+
+        ImageDTO imageDTO = imageMapper.imageToImageDTO(image);
+        imageDTO.setProductDTO(productDTO);
+
+        return imageDTO;
     }
 
     @Override
     @Transactional
     public void deleteById(Integer id) throws IOException {
 
-        ImageDTO imageDTO = findById(id);
+        Image image = imageRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Image [id:" +
+                        id + "] not found"));
+
+        Path path = Paths.get(fileStorage, image.getName());
+        if (Files.exists(path)) {
+            Files.delete(Paths.get(fileStorage, image.getName()));
+        }
 
         imageRepository.deleteById(id);
-
-        if (imageDTO != null) {
-            Files.delete(Paths.get(fileStorage, imageDTO.getName()));
-        }
     }
 
     @Override

@@ -42,6 +42,12 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-4 mb-3">
+                                <label for="description">Description:</label>
+                                <textarea class="form-control" id="description" rows="8" th:field="*{description}"></textarea>
+                            </div>                                                        
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4 mb-3">
                                 <label for="brand">Brand:</label>
                                 <select th:field="*{brand}" class="form-control" id="brand" required>    
                                     <option th:each="brand: ${brands}" th:value="${brand.id}" th:text="${brand.name}"></option>
@@ -52,6 +58,12 @@
                             <div class="col-md-4 mb-3">
                                 <label for="price">Price:</label>
                                 <input type="number" class="form-control" id="price" th:field="*{price}" required step="0.01" min="0" max="10000000">
+                            </div>                                                        
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4 mb-3">
+                                <label for="oldPrice">Old Price:</label>
+                                <input type="number" class="form-control" id="oldPrice" th:field="*{oldPrice}" step="0.01" min="0" max="10000000">
                             </div>                                                        
                         </div>
                         <div class="form-group">
@@ -73,16 +85,21 @@
 
                         <div class="form-group">
                             <div class="col-md-4 mb-3 font-weight-bold">
-                                <label for="file">Add image:</label>
+                                <label for="file">Add Image:</label>
                                 <input type="file" class="form-control" id="file" th:field="*{file}" accept="image/*">
                             </div>                                                        
                         </div>
 
                     </form>
                 </div>
-                <div class="card-footer bg-white">                    
-                    <button type="submit" form="product-form" class="btn btn-primary btn-lg btn-pill">OK</button>
-                    <button type="reset" form="product-form" class="btn btn-secondary btn-lg btn-pill">Cancel</button>
+                <div class="card-footer bg-white">  
+                    <div class="col-md-4 mb-3 d-flex flex-row justify-content-between font-weight-bold">
+                        <div>
+                            <button type="submit" form="product-form" class="btn btn-primary btn-sm btn-pill">OK</button>
+                            <a href="#" th:href="@{/products}" class="btn btn-sm btn-pill btn-secondary">Cancel</a>
+                        </div>
+                        <button type="reset" form="product-form" class="btn btn-warning btn-sm btn-pill">Reset</button>
+                    </div>
                 </div>
 
 
