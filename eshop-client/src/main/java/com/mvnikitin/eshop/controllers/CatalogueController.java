@@ -25,7 +25,7 @@ public class CatalogueController {
         return "catalogue";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/category/{id}")
     public  String showByCategory(@PathVariable(value = "id") Integer id,
                                   Model model) {
         model.addAttribute("products", productService.findAllByCategoryId(id));
