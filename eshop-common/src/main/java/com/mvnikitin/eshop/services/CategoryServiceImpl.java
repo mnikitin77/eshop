@@ -17,6 +17,9 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
     private CategoryMapper categoryMapper;
 
+    private final Sort sortByNameAsc = Sort.sort(Category.class)
+            .by("name").ascending();
+
     @Autowired
     public void setCategoryRepository(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
@@ -37,12 +40,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> findAll() {
-
-        Sort sort = Sort.sort(Category.class)
-                .by("name").ascending();
-
         return categoryMapper.categoriesToCategoryDTOs(
-                categoryRepository.findAll(sort));
+                categoryRepository.findAll(sortByNameAsc));
     }
 
     @Override

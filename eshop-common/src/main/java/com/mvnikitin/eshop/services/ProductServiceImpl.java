@@ -3,11 +3,13 @@ package com.mvnikitin.eshop.services;
 import com.mvnikitin.eshop.dto.ImageDTO;
 import com.mvnikitin.eshop.dto.ProductDTO;
 import com.mvnikitin.eshop.mappers.ProductMapper;
+import com.mvnikitin.eshop.model.Category;
 import com.mvnikitin.eshop.model.Image;
 import com.mvnikitin.eshop.model.Product;
 import com.mvnikitin.eshop.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,9 @@ import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    private final Sort sortByNameAsc = Sort.sort(Product.class)
+            .by("name").ascending();
 
     private ProductRepository productRepository;
     private ProductMapper productMapper;
@@ -63,6 +68,12 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> findAllActive() {
         return productMapper.productsToProductDTOs(
                 productRepository.findAllByIsActive(true));
+    }
+
+    @Override
+    public List<ProductDTO> findAllByCategoryId(Integer id) {
+        return productMapper.productsToProductDTOs(
+                productRepository.findAllByCategoryId(id, sortByNameAsc));
     }
 
     @Override

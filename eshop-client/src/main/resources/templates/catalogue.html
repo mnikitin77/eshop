@@ -42,7 +42,7 @@
 							<a th:if="${cat.children} == null" href="#">[[${cat.name}]]<span class="number">([[${cat.productsCount}]])</span></a>							
 							<a th:if="${cat.children} != null" data-toggle="collapse" th:href="'#' + ${cat_code}" aria-expanded="false" th:aria-controls="${cat_code}"><span class="lnr lnr-arrow-right"></span>[[${cat.name}]]<span class="number">([[${cat.productsCount}]])</span></a>
 							<ul th:if="${cat.children} != null" class="collapse" th:id="${cat_code}" data-toggle="collapse" aria-expanded="false" th:aria-controls="${cat_code}">
-								<li th:each="child_cat : ${cat.children}" class="main-nav-list child"><a href="#">[[${child_cat.name}]]<span class="number">([[${child_cat.productsCount}]])</span></a></li>
+								<li th:each="child_cat : ${cat.children}" class="main-nav-list child"><a th:href="@{/shop/{id}(id=${child_cat.id})}">[[${child_cat.name}]]<span class="number">([[${child_cat.productsCount}]])</span></a></li>
 							</ul>
 						</li>
 				
