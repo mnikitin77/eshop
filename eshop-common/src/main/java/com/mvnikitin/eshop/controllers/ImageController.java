@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 @RequestMapping("/image")
 public class ImageController {
 
-    @Value("${eshop-admin.file.storage}")
+    @Value("${eshop.file.storage}")
     private String fileStorage;
 
     private ImageService imageService;
@@ -31,7 +31,9 @@ public class ImageController {
     @GetMapping("/{id}")
     public String edit(@PathVariable(value = "id") Integer id,
                        Model model) {
-        model.addAttribute("image", imageService.findById(id));
+        ImageDTO imageDTO = imageService.findById(id);
+        model.addAttribute("image", imageDTO);
+        model.addAttribute("product_id", imageDTO.getProductDTO().getId());
         return "image";
     }
 

@@ -2,8 +2,10 @@ package com.mvnikitin.eshop.services;
 
 import com.mvnikitin.eshop.dto.BrandDTO;
 import com.mvnikitin.eshop.mappers.BrandMapper;
+import com.mvnikitin.eshop.model.Category;
 import com.mvnikitin.eshop.repositories.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +37,11 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public List<BrandDTO> findAll() {
+        Sort sort = Sort.sort(Category.class)
+                .by("name").ascending();
+
         return brandMapper.brandsToBrandDTOs(
-                brandRepository.findAll());
+                brandRepository.findAll(sort));
     }
 
     @Override

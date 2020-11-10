@@ -1,6 +1,7 @@
 package com.mvnikitin.eshop.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -32,6 +33,7 @@ public class Image {
     @Column
     private Boolean selected;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

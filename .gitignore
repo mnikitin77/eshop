@@ -2,6 +2,7 @@ HELP.md
 eshop-admin/target/
 eshop-client/target/
 eshop-db/target/
+eshop-common/target/
 .mvn/wrapper/
 .idea/
 !.mvn/wrapper/maven-wrapper.jar

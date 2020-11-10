@@ -25,6 +25,7 @@
 
     <modules>
         <module>eshop-db</module>
+        <module>eshop-common</module>
         <module>eshop-admin</module>
         <module>eshop-client</module>
     </modules>

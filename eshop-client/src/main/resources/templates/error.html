@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head th:replace="fragments/head.html :: cli_head_block(~{::title})">
+	<title>eshop | error</title>
+</head>
+
+<body>
+
+	<!-- Start Header Area -->
+	<header  th:replace="fragments/header.html :: cli_header_block(${'error'})" class="header_area sticky-header"></header>
+	<!-- End Header Area -->
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Error</h1>
+					<nav class="d-flex align-items-center">
+						<a th:href="@{/}">Home<span class="lnr lnr-arrow-right"></span></a>					
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<section class="error_details section_gap">
+		<div class="container">
+			<h3>An error occured at [[${uri}]]</h3>
+			<h5 th:text="'Error code: ' + ${code}">code</h5>
+			<h5 th:text="'Message: ' + ${message}">message</h5>
+		</div>
+	</section>
+
+	<!-- start footer Area -->
+	<footer th:replace="fragments/footer.html :: cli_footer_block"></footer>
+	<!-- End footer Area -->
+
+
+<div th:replace="fragments/scripts.html :: cli_scripts_block"></div>
+</body>
+
+</html>
