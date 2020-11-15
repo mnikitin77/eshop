@@ -5,7 +5,8 @@
 	<title>eshop | cataloge</title>
 </head>
 
-<body id="category">
+<!-- <body id="category" onload="setPriceRange()"> -->
+	<body id="category">
 
 	<!-- Start Header Area -->
 	<header  th:replace="fragments/header.html :: cli_header_block(${'shop'})" class="header_area sticky-header"></header>
@@ -48,20 +49,28 @@
 				
 					</ul>
 				</div>
-	<!-- Filters -->
+	<!-- Filters -->				
+
+			<form id="filterForm" th:action="@{/shop}" th:object="${filter}" method="POST">
+				<input type="hidden" form="filterForm" id="price_min" th:field="${filter.minPrice}">
+				<input type="hidden" form="filterForm" id="price_max" th:field="${filter.maxPrice}">
+			</form>
+			
+			<form id="resetFilterForm" th:action="@{/shop/reset}" method="GET"></form>
+
 				<div class="sidebar-filter mt-50">
 					<div class="top-filter-head">Product Filters</div>
 					<div class="common-filter">
 						<div class="head">Price</div>
 						<div class="price-range-area">
-							<div id="price-range"></div>
+							<div id="price-range-custom"></div>
 							<div class="value-wrapper d-flex">
-								<div class="price">Price:</div>
-								<span>$</span>
+								<div class="price">Price:</div>								
 								<div id="lower-value"></div>
-								<div class="to">to</div>
-								<span>$</span>
+								<span>р</span>
+								<div class="to">to</div>								
 								<div id="upper-value"></div>
+								<span>р</span>
 							</div>
 						</div>
 					</div>
@@ -76,22 +85,26 @@
 				</div>
 			</div>
 			<div class="col-xl-9 col-lg-8 col-md-7">
+				
 				<!-- Start Filter Bar -->
 				<div class="filter-bar d-flex flex-wrap align-items-center">
 					<div class="sorting">
-						<select>
-							<option value="1">Default sorting</option>
-							<option value="1">Default sorting</option>
-							<option value="1">Default sorting</option>
+						<select form="filterForm" name="sortby" id="sortby" th:field="${filter.sortBy}">
+							<option th:selected="(${filter.sortBy == 'name'}) or (${filter.sortBy == null})" value="name">By Title</option>
+							<option th:selected="${filter.sortBy == 'price'}" value="price">By Price</option>						
 						</select>
 					</div>
 					<div class="sorting mr-auto">
-						<select>
-							<option value="1">Show 12</option>
-							<option value="1">Show 12</option>
-							<option value="1">Show 12</option>
+						<select form="filterForm" name="count" id="count" th:field="${filter.rows}">
+							<option th:selected="(${filter.rows} == 6) or (${filter.rows} == null)" value="6">Show 6</option>
+							<option th:selected="${filter.rows} == 12" value="12">Show 12</option>
+							<option th:selected="${filter.rows} == 24" value="24">Show 24</option>
 						</select>
 					</div>
+
+					<div class="sorting"><button id="apply_filter" form="filterForm" type="submit" class="genric-btn primary circle">Filter</button></div>
+					<div class="sorting"><button id="reset_filter" form="resetFilterForm" type="submit" class="genric-btn default circle">Reset</button></div>
+
 					<div class="pagination">
 						<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
 						<a href="#" class="active">1</a>
@@ -107,8 +120,9 @@
 				<!-- Product items -->
 				<section class="lattest-product-area pb-40 category-list">
 					<div class="row">
-						<!-- single product -->
-						<div th:each="prod: ${products}" class="col-lg-4 col-md-6">
+
+						<div th:if="${products.hasContent()}" 
+								th:each="prod: ${products.getContent()}" class="col-lg-4 col-md-6">
 
 							<div class="single-product"
 								th:with="image = ${prod.getPrimaryImage()}">
@@ -123,7 +137,6 @@
 								</a>
 
 								<div class="product-details">
-									<!-- <h6 th:text="${prod.name}"></h6> -->
 									<a th:href="@{/shop/product/{id}(id=${prod.id})}" class="title" th:text="${prod.name}"></a>
 									<div class="price">
 										<h6 th:text="${#numbers.formatDecimal(prod.price, 0, 'COMMA', 2, 'POINT')} + ' руб.'"></h6>
@@ -133,7 +146,7 @@
 									</div>
 									<div class="prd-bottom">
 
-										<a href="#" class="social-info">
+										<a th:href="@{/cart/{id}/add(id=${prod.id})}" class="social-info">
 											<span class="ti-bag"></span>
 											<p class="hover-text">add to bag</p>
 										</a>
@@ -164,6 +177,7 @@
 					</div>
 				</div>
 				<!-- End Filter Bar -->
+			
 			</div>
 		</div>
 	</div>
@@ -175,6 +189,53 @@
 	<!-- End footer Area -->
 
 	<div th:replace="fragments/scripts.html :: cli_scripts_block"></div>
+
+	<script>
+		$(function(){
+
+			if(document.getElementById("price-range-custom")){
+
+			var nonLinearSlider = document.getElementById('price-range-custom');
+
+			noUiSlider.create(nonLinearSlider, {
+				connect: true,
+				behaviour: 'tap',
+				start: [ [[${filter.minPrice}]], [[${filter.maxPrice}]] ],
+				range: {
+					// Starting at 500, step the value by 500,
+					// until 4000 is reached. From there, step by 1000.
+					'min': [ [[${default_minprice}]] ],
+					'10%': [ 5000, 10 ],
+					'50%': [ 25000, 500 ],
+					'max': [ [[${default_maxprice}]] ]
+				}
+			});
+
+
+			var nodes = [
+				document.getElementById('lower-value'), // 0
+				document.getElementById('upper-value')  // 1
+			];
+
+			var minPriceInput = document.getElementById('price_min'),
+				maxPriceInput = document.getElementById('price_max');
+
+			// Display the slider value and how far the handle moved
+			// from the left edge of the slider.
+			nonLinearSlider.noUiSlider.on('update', function ( values, handle, unencoded, isTap, positions ) {
+				nodes[handle].innerHTML = values[handle];
+
+				if ( handle ) {
+					maxPriceInput.value = values[handle];
+				} else {
+					minPriceInput.value = values[handle];
+				}
+			});
+
+			}
+
+		});
+	</script>
 </body>
 
 </html>

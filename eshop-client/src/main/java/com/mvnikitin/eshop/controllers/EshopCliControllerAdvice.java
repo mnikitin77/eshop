@@ -1,17 +1,18 @@
 package com.mvnikitin.eshop.controllers;
 
+import com.mvnikitin.eshop.dto.CatalogueFilter;
 import com.mvnikitin.eshop.dto.CategoryTreeDTO;
+import com.mvnikitin.eshop.dto.ShoppingCart;
 import com.mvnikitin.eshop.model.ICategoryCount;
 import com.mvnikitin.eshop.repositories.BrandCountRepository;
 import com.mvnikitin.eshop.repositories.CategoryCountRepository;
-import com.mvnikitin.eshop.services.BrandService;
-import com.mvnikitin.eshop.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,6 +26,16 @@ public class EshopCliControllerAdvice {
 
     @Value("${eshop.image_default}")
     String defaultImageName;
+    @Value("${eshop.default_items_per_page}")
+    Integer defaultItemsPerPage;
+    @Value("${eshop.default_sort_by}")
+    String defaultSortBy;
+    @Value("${eshop.default_page}")
+    Integer defaultPage;
+    @Value("${eshop.default_minprice}")
+    BigDecimal defaultMinPrice;
+    @Value("${eshop.default_maxprice}")
+    BigDecimal defaultMaxPrice;
 
     @Autowired
     public void setCategoryCountRepository(
@@ -37,9 +48,25 @@ public class EshopCliControllerAdvice {
         this.brandCountRepository = brandCountRepository;
     }
 
+    @ModelAttribute("filter")
+    public CatalogueFilter catalogueFilter() {
+        return new CatalogueFilter();
+    }
+
+    @ModelAttribute("cart")
+    public ShoppingCart shoppingCart() {
+        return new ShoppingCart();
+    }
+
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("default_image_name",defaultImageName);
+        model.addAttribute("default_items_number",defaultItemsPerPage);
+        model.addAttribute("default_sort_by", defaultSortBy);
+        model.addAttribute("default_sort_by", defaultPage);
+        model.addAttribute("default_minprice", defaultMinPrice);
+        model.addAttribute("default_maxprice", defaultMaxPrice);
+
         model.addAttribute("cats", getCategoryTreeDTOS());
         model.addAttribute("brands",
                 brandCountRepository.countTotalProductsByBrandNative());

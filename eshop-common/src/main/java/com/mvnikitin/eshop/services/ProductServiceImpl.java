@@ -1,25 +1,27 @@
 package com.mvnikitin.eshop.services;
 
+import com.mvnikitin.eshop.dto.BrandDTO;
 import com.mvnikitin.eshop.dto.ImageDTO;
 import com.mvnikitin.eshop.dto.ProductDTO;
 import com.mvnikitin.eshop.mappers.ProductMapper;
-import com.mvnikitin.eshop.model.Category;
 import com.mvnikitin.eshop.model.Image;
 import com.mvnikitin.eshop.model.Product;
 import com.mvnikitin.eshop.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -31,9 +33,14 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
     private ImageService imageService;
 
-
     @Value("${eshop.file.storage}")
     private String fileStorage;
+
+    @Value("${eshop.default_items_per_page}")
+    private String defaultItemsPerPage;
+
+    @Value("${eshop.default_sort_by}")
+    private String defaultSortBy;
 
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
@@ -67,13 +74,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> findAllActive() {
         return productMapper.productsToProductDTOs(
-                productRepository.findAllByIsActive(true));
+                productRepository.findAllByIsActiveTrue());
     }
 
     @Override
-    public List<ProductDTO> findAllByCategoryId(Integer id) {
+    public List<ProductDTO> findAllByCategoryIdActive(Integer id) {
         return productMapper.productsToProductDTOs(
-                productRepository.findAllByCategoryId(id, sortByNameAsc));
+                productRepository.findAllByCategoryIdAndIsActiveTrue(
+                        id, sortByNameAsc));
     }
 
     @Override
@@ -122,5 +130,36 @@ public class ProductServiceImpl implements ProductService {
             imageService.deleteById(imageDTO.getId());
         }
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<ProductDTO> getItemsByPage(BigDecimal priceMin,
+                                        BigDecimal priceMax,
+                                        Integer pageNumber,
+                                        Integer rowsPerPage,
+                                        String sortBy,
+                                        Integer categoryId) {
+
+        Sort sort = Sort.sort(Product.class)
+                .by(sortBy)
+                .ascending();
+
+        Pageable pageable = PageRequest.of(
+                pageNumber != null ? pageNumber - 1 : 0,
+                rowsPerPage,
+                sort);
+
+        if (categoryId != null) {
+            return productRepository.findByIsActiveTrueAndCategoryIdAndPriceBetween(
+                    categoryId,
+                    priceMin,
+                    priceMax,
+                    pageable)
+                .map(prod -> productMapper.productToProductDTO((Product)prod));
+        } else {
+            return productRepository.findByIsActiveTrueAndPriceBetween(
+                    priceMin, priceMax, pageable)
+                .map(prod -> productMapper.productToProductDTO((Product)prod));
+        }
     }
 }

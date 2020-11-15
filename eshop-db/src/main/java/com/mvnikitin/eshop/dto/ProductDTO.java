@@ -3,12 +3,16 @@ package com.mvnikitin.eshop.dto;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 @Data
-public class ProductDTO {
+public class ProductDTO implements Serializable {
+
+    private static final long serialVersionUID = -4859147644776923504L;
+
     private Integer id;
     private String code;
     private String name;
