@@ -31,6 +31,11 @@
 	<!--================Single Product Area =================-->
 	<div class="product_image_area">
 		<div class="container">
+
+			<form id="addToCartForm" th:action="@{/cart/add}" method="GET">
+				<input type="hidden" name="id" id="id" th:value="${product.id}">
+			</form>
+
 			<div class="row s_product_inner" 
 				th:with="image = ${product.getPrimaryImage()}">
 
@@ -71,15 +76,15 @@
 						</ul>
 						
 						<div class="product_count">
-							<label for="qty">Quantity:</label>
-							<input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
-							<button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+							<label for="quantity">Quantity:</label>
+							<input type="text" form="addToCartForm" name="quantity" id="quantity" maxlength="12" value="1" title="Quantity:" class="input-text qty">
+							<button onclick="var result = document.getElementById('quantity'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
 							 class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-							<button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+							<button onclick="var result = document.getElementById('quantity'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
 							 class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
 						</div>
 						<div class="card_area d-flex align-items-center">
-							<a class="primary-btn" href="#">Add to Cart</a>
+							<button id="add_btn" form="addToCartForm" type="submit" class="primary-btn">Add to Cart</button>
 						</div>
 					</div>
 				</div>

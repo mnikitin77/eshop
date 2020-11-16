@@ -6,9 +6,9 @@ import java.util.List;
 
 @Data
 public class CategoryTreeDTO {
-    Integer id;
-    Integer parentId;
-    String name;
-    Integer productsCount;
-    List<CategoryTreeDTO> children;
+    private Integer id;
+    private Integer parentId;
+    private String name;
+    private Integer productsCount;
+    private List<CategoryTreeDTO> children;
 }

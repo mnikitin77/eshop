@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+    <head th:replace="fragments/head.html :: cli_head_block(~{::title})">
+        <title>eshop | cart</title>
+    </head>
+
+<body>
+
+    	<!-- Start Header Area -->
+	<header  th:replace="fragments/header.html :: cli_header_block(${'cart'})" class="header_area sticky-header"></header>
+	<!-- End Header Area -->
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Shopping Cart</h1>
+                    <nav class="d-flex align-items-center">
+                        <a th:href="@{/}">Home<span class="lnr lnr-arrow-right"></span></a>		
+                        <a th:href="@{/shop}">Catalogue<span class="lnr lnr-arrow-right"></span></a>					
+						<a th:href="@{/cart}">Cart</a>                        
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Cart Area =================-->
+    <section class="cart_area">
+
+        <div class="container">
+            <div class="cart_inner">
+
+                <form id="updateCartForm" th:action="@{/cart}" th:object="${cart}" method="POST">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item, iterStat: *{itemsForUpdate}"
+                                    th:with="quantity = 'quantity_' + (${iterStat.index} + 1), 
+                                            total = 'total_' + (${iterStat.index} + 1), 
+                                            price = 'price_' + (${iterStat.index} + 1),
+                                            prod = ${item.getProduct()}">
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex" th:with="image = ${prod.getPrimaryImage()}">
+                                                <img th:if="${image} == null" class="img-fluid" th:src="@{/img/} + ${default_image_name}" alt="No image provided" width="50px">
+                                                <img class="img-fluid" 
+                                                    th:if="${image} != null" 									
+                                                    th:src="@{/image/download/{id}(id=${image.id})}" 
+                                                    th:alt="${image.description} ? image.description : 'No description provided'"
+                                                        width="50px">
+                                            </div>
+                                            <div class="media-body">
+                                                <p th:text="${prod.name}"></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5 th:id="${price}" th:text="${#numbers.formatDecimal(prod.price, 0, 'COMMA', 2, 'POINT')} + ' р.'"></h5>
+                                    </td>
+                                    <td>
+                                        <div class="product_count">
+                                            <input type="text" name="qty" th:id="${quantity}" maxlength="12" value="1" title="Quantity:" class="input-text qty" 
+                                                    th:field="*{itemsForUpdate[__${iterStat.index}__].quantity}"
+                                                    th:data-total="${total}"
+                                                    th:data-price="${prod.price}"
+                                                oninput="var total = document.getElementById(this.getAttribute('data-total')); var price = this.getAttribute('data-price'); if( !isNaN( this.value )  &amp;&amp; !isNaN( price )) total.innerHTML = (this.value * price).toFixed(2) + ' р';">
+
+                                            <button 
+                                                th:data-quantity="${quantity}"
+                                                th:data-total="${total}"
+                                                th:data-price="${prod.price}"
+                                                onclick="var result = document.getElementById(this.getAttribute('data-quantity')); var sst = result.value; var total = document.getElementById(this.getAttribute('data-total')); var price = this.getAttribute('data-price'); if( !isNaN( sst )) result.value++; if( !isNaN( sst )  &amp;&amp; !isNaN( price )) total.innerHTML = (result.value * price).toFixed(2) + ' р';"
+                                                class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
+
+                                            <button 
+                                                th:data-quantity="${quantity}"
+                                                th:data-total="${total}"
+                                                th:data-price="${prod.price}"
+                                                onclick="var result = document.getElementById(this.getAttribute('data-quantity')); var sst = result.value; var total = document.getElementById(this.getAttribute('data-total')); var price = this.getAttribute('data-price'); if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--; if( !isNaN( sst )  &amp;&amp; !isNaN( price )) total.innerHTML = (result.value * price).toFixed(2) + ' р';"
+                                                class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5><nobr th:id="${total}" th:text="${#numbers.formatDecimal(item.getTotal(), 0, 'COMMA', 2, 'POINT')} + ' р.'"></nobr></h5>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/cart/{id}/delete(id=${prod.id})}"><span class="ti-trash" style="color: gray;"></span></a>
+                                    </td>
+                                </tr>                        
+                                <tr class="bottom_button">
+                                    <td>
+                                        <button id="update_btn" form="updateCartForm" type="submit" class="gray_btn">Update Cart</button>                                        
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>                                    
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+                                        <h5>Subtotal</h5>
+                                    </td>
+                                    <td>
+                                        <h5 th:text="${cart.getTotal()}"></h5>
+                                    </td>
+                                </tr>                        
+                                <tr class="out_button_area">
+                                    <td>
+
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+                                        <div class="checkout_btn_inner d-flex align-items-center">
+                                            <a class="gray_btn" th:href="@{/shop}">Continue Shopping</a>
+                                            <a class="primary-btn" href="#">Proceed to checkout</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!--================End Cart Area =================-->
+
+	<!-- start footer Area -->
+	<footer th:replace="fragments/footer.html :: cli_footer_block"></footer>
+	<!-- End footer Area -->
+
+    <div th:replace="fragments/scripts.html :: cli_scripts_block"></div>
+    
+    <script>
+        function updateTotal(quantityId, totalId, priceId) {
+
+            var quantity = document.getElementById(quantityId);
+            var price = document.getElementById(quantityId);
+            var total = document.getElementById(priceId);
+
+            total.value = quantity.value * price.value;
+        }
+    </script>
+
+</body>
+
+</html>
