@@ -20,6 +20,10 @@ public class LineItem implements Serializable {
         this.quantity = quantity;
     }
 
+    public LineItem(ProductDTO product) {
+        this(product, 1);
+    }
+
     public BigDecimal getTotal() {
         return product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }

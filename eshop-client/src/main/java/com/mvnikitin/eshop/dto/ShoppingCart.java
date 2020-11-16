@@ -20,7 +20,7 @@ public class ShoppingCart implements Serializable {
     }
 
     public void removeItem(ProductDTO product) {
-        LineItem item = new LineItem(product, 1);
+        LineItem item = new LineItem(product);
         removeItem(item);
     }
 
@@ -37,7 +37,7 @@ public class ShoppingCart implements Serializable {
         Integer previousQuantity = items.stream()
                 .filter(i -> i.equals(item))
                 .map(i -> i.getQuantity())
-                .reduce((res, i) -> i).orElse(null);
+                .reduce((res, i) -> i).orElse(0);
 
         // Previous item has the outdated quantity value
         // (quantity is not used in equals() and hashcode() implementation).
@@ -58,7 +58,8 @@ public class ShoppingCart implements Serializable {
     public BigDecimal getTotal() {
         return items.stream()
                 .map(item -> item.getTotal())
-                .reduce((sum, itemTotal) -> sum.add(itemTotal)).orElse(null);
+                .reduce((sum, itemTotal) ->
+                        sum.add(itemTotal)).orElse(BigDecimal.valueOf(0));
     }
 
     public List<LineItem> getItemsForUpdate() {
