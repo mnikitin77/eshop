@@ -46,13 +46,14 @@ public class CatalogueController {
             filter.setMaxPrice(defaultMaxPrice);
             filter.setMinPrice(defaultMinPrice);
             filter.setRows(defaultItemsPerPage);
+            filter.setCurrent(1);
             filter.setSortBy(defaultSortBy);
         }
 
         Page<ProductDTO> products = productService.getItemsByPage(
                 filter.getMinPrice() != null? filter.getMinPrice() : defaultMinPrice,
                 filter.getMaxPrice() != null? filter.getMaxPrice() : defaultMaxPrice,
-                defaultPage, //TODO --> Сделать потом постраничный вывод
+                filter.getCurrent() != null? filter.getCurrent() : defaultPage,
                 filter.getRows() != null? filter.getRows() : defaultItemsPerPage,
                 filter.getSortBy() != null? filter.getSortBy() : defaultSortBy,
                 null);
@@ -70,7 +71,7 @@ public class CatalogueController {
         Page<ProductDTO> products = productService.getItemsByPage(
                 filter.getMinPrice() != null? filter.getMinPrice() : defaultMinPrice,
                 filter.getMaxPrice() != null? filter.getMaxPrice() : defaultMaxPrice,
-                defaultPage, //TODO --> Сделать потом постраничный вывод
+                filter.getCurrent() != null? filter.getCurrent() : defaultPage,
                 filter.getRows() != null? filter.getRows() : defaultItemsPerPage,
                 filter.getSortBy() != null? filter.getSortBy() : defaultSortBy,
                 id);
@@ -78,6 +79,14 @@ public class CatalogueController {
         model.addAttribute("products", products);
 
         return "catalogue";
+    }
+
+    @GetMapping("/category/page/{p}")
+    public  String showByCategory(@PathVariable(value = "p") Integer p,
+                                  @ModelAttribute("filter")  CatalogueFilter filter) {
+        filter.setCurrent(p);
+        filter.setApplied(true);
+        return "redirect:/shop";
     }
 
     @PostMapping
@@ -93,11 +102,9 @@ public class CatalogueController {
 
     @GetMapping("/reset")
     public String resetFilter(
-            @ModelAttribute("filter")  CatalogueFilter filter,
-            Model model) {
+            @ModelAttribute("filter")  CatalogueFilter filter) {
 
         filter.setApplied(false);
-
         return "redirect:/shop";
     }
 }

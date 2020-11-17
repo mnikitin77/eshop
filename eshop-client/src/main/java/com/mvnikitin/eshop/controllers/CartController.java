@@ -30,7 +30,6 @@ public class CartController {
                           @ModelAttribute("cart") ShoppingCart cart) {
 
         cart.addOrModifyItem(productService.findById(id), 1);
-
         return "redirect:/shop";
     }
 
@@ -40,11 +39,9 @@ public class CartController {
                                          @RequestParam(value = "quantity",
                                                  defaultValue = "1")
                                                  Integer quantity,
-                          @ModelAttribute("cart") ShoppingCart cart,
-                          Model model) {
+                          @ModelAttribute("cart") ShoppingCart cart) {
 
         cart.addOrModifyItem(productService.findById(id), quantity);
-
         return "redirect:/shop";
     }
 
