@@ -16,44 +16,41 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class CliSecurityConfig extends WebSecurityConfigurerAdapter {
-    private UserDetailsService userAuthService;
+
+    DaoAuthenticationProvider authenticationProvider;
 
     @Autowired
-    public void setUserAuthService(UserDetailsService userAuthService) {
-        this.userAuthService = userAuthService;
+    public void setAuthenticationProvider(DaoAuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+        auth.authenticationProvider(authenticationProvider);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
+                .antMatchers("/checkout/**").hasAnyRole("CLIENT", "ADMIN")
                 .antMatchers(
                         "/css/**",
                         "/js/**",
                         "/fonts/**",
-                        "/img/**").permitAll()
-                .antMatchers("/**").permitAll()
+                        "/img/**",
+                        "/**").permitAll()
                     .anyRequest().authenticated()
-        .and()
-            .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userAuthService);
-        auth.setPasswordEncoder(passwordEncoder());
-        return auth;
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .and()
+            .logout()
+                .logoutRequestMatcher(
+                        new AntPathRequestMatcher("/logout", "GET"))
+                .logoutSuccessUrl("/")
+            .and()
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
     }
 }

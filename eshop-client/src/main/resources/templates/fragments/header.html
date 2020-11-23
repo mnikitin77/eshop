@@ -2,25 +2,6 @@
 <html lang="en" 
     xmlns:th="http://www.thymeleaf.org" 
     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    
-    <!-- <nav th:fragment="common_header_block" class="navbar navbar-expand navbar-dark bg-primary">
-        <a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars"></i></a>
-        <a class="navbar-brand" href="#">eshop management console</a>
-            
-        <div class="navbar-collapse collapse">
-            <ul class="navbar-nav ml-auto">
-                <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-                    <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i>&nbsp;&nbsp;                                                
-                            <span sec:authentication="principal.username"></span>
-                    </a>                
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">                                                                            
-                            <a href="#" th:href="@{/logout}" class="dropdown-item">Log out</a>
-                        </div>
-                </li>            
-            </ul>
-        </div>
-    
-    </nav> -->
 
     <!-- Start Header Area -->
 	<header  th:fragment="cli_header_block(page)" class="header_area sticky-header">
@@ -28,25 +9,24 @@
 			<nav class="navbar navbar-expand-lg navbar-light main_box">
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="index.html"><img th:src="@{/img/logo.png}" alt=""></a>
+					<a class="navbar-brand logo_h" th:href="@{/}"><img th:src="@{/img/logo.png}" alt=""></a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
+						<!-- <span class="icon-bar"></span>
+						<span class="icon-bar"></span> -->
 					</button>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto">
 							<li class="nav-item" th:classappend="${page == 'home'} ? 'active'"><a class="nav-link" th:href="@{/}">Home</a></li>
 							<li class="nav-item" th:classappend="${page == 'shop'} ? 'active'"><a class="nav-link" th:href="@{/shop}">Shop</a></li>						
-							<li class="nav-item"><a class="nav-link" th:href="contact.html">Contact</a></li>
+							<li class="nav-item" th:classappend="${page == 'shop'} ? 'active'"><a class="nav-link" th:href="@{/shop}">Contact</a></li>						
+							<!-- <li sec:authorize="!isAuthenticated()" class="nav-item" th:classappend="${page == 'shop'} ? 'active'"><a class="nav-link" th:href="@{/login}">LOGIN</a></li> -->
+							<li sec:authorize="isAuthenticated()" class="nav-item" th:classappend="${page == 'shop'} ? 'active'"><a class="nav-link" th:href="@{/logout}">LOGOFF</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item"><a th:href="@{/cart}" class="cart"><span class="ti-bag"></span></a></li>
-							<li class="nav-item">
-								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
-							</li>
 						</ul>
 					</div>
 				</div>

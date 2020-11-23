@@ -26,6 +26,8 @@ public class EshopCliControllerAdvice {
 
     @Value("${eshop.image_default}")
     String defaultImageName;
+    @Value("${eshop.default_user_role}")
+    String defaultUserRole;
     @Value("${eshop.default_items_per_page}")
     Integer defaultItemsPerPage;
     @Value("${eshop.default_sort_by}")

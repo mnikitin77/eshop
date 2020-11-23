@@ -2,8 +2,9 @@ package com.mvnikitin.eshop.controllers;
 
 import com.mvnikitin.eshop.dto.CatalogueFilter;
 import com.mvnikitin.eshop.dto.ProductDTO;
-import com.mvnikitin.eshop.services.ProductService;
+import com.mvnikitin.eshop.services.ProductServicePaged;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,10 @@ import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/shop")
-@SessionAttributes(value = {"filter", "cart"})
+@SessionAttributes(value = "filter")
 public class CatalogueController {
 
-    private ProductService productService;
+    private ProductServicePaged productService;
 
     @Value("${eshop.default_items_per_page}")
     Integer defaultItemsPerPage;
@@ -33,7 +34,9 @@ public class CatalogueController {
     BigDecimal defaultMaxPrice;
 
     @Autowired
-    public void setProductService(ProductService productService) {
+
+    @Qualifier("productServicePaged")
+    public void setProductService(ProductServicePaged productService) {
         this.productService = productService;
     }
 
