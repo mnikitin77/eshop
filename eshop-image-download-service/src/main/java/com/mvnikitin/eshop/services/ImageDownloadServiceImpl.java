@@ -5,7 +5,6 @@ import com.mvnikitin.eshop.mappers.ImageMapper;
 import com.mvnikitin.eshop.model.Image;
 import com.mvnikitin.eshop.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,9 +14,6 @@ public class ImageDownloadServiceImpl implements ImageDownloadService {
     private ImageMapper imageMapper;
 //    private ProductMapper productMapper;
 //    private ProductRepository productRepository;
-
-    @Value("${eshop.file.storage}")
-    private String fileStorage;
 
     @Autowired
     public void setImageRepository(ImageRepository imageRepository) {

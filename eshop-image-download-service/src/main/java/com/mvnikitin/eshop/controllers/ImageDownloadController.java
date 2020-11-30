@@ -52,4 +52,10 @@ public class ImageDownloadController {
 
         return;
     }
+
+    @GetMapping
+    public void test(HttpServletResponse response) throws IOException {
+        log.info("Test");
+        response.getWriter().write("Test");
+    }
 }
