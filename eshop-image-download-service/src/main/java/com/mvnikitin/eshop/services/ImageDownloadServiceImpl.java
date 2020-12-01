@@ -12,8 +12,6 @@ public class ImageDownloadServiceImpl implements ImageDownloadService {
 
     private ImageRepository imageRepository;
     private ImageMapper imageMapper;
-//    private ProductMapper productMapper;
-//    private ProductRepository productRepository;
 
     @Autowired
     public void setImageRepository(ImageRepository imageRepository) {
@@ -25,28 +23,13 @@ public class ImageDownloadServiceImpl implements ImageDownloadService {
         this.imageMapper = imageMapper;
     }
 
-//    @Autowired
-//    public void setProductMapper(ProductMapper productMapper) {
-//        this.productMapper = productMapper;
-//    }
-//
-//    @Autowired
-//    public void setProductRepository(ProductRepository productRepository) {
-//        this.productRepository = productRepository;
-//    }
-
     @Override
     public ImageDTO findById(Integer id) {
 
         Image image = imageRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Image [id:" +
                         id + "] not found"));
-//        ProductDTO productDTO =
-//                productMapper.productToProductDTO(image.getProduct());
 
-        ImageDTO imageDTO = imageMapper.imageToImageDTO(image);
-//        imageDTO.setProductDTO(productDTO);
-
-        return imageDTO;
+        return imageMapper.imageToImageDTO(image);
     }
 }

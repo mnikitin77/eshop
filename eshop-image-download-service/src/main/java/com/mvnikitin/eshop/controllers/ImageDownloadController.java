@@ -2,9 +2,8 @@ package com.mvnikitin.eshop.controllers;
 
 import com.mvnikitin.eshop.dto.ImageDTO;
 import com.mvnikitin.eshop.services.ImageDownloadService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +23,6 @@ public class ImageDownloadController {
 
     private ImageDownloadService imageService;
 
-    private final static Logger log = LoggerFactory.getLogger(ImageDownloadController.class);
-
     @Autowired
     public void setImageService(ImageDownloadService imageService) {
         this.imageService = imageService;
@@ -35,8 +32,6 @@ public class ImageDownloadController {
     public void downloadProductImage(
             @PathVariable("id") Integer id,
             HttpServletResponse response) throws IOException {
-
-        log.info("Image id={} reqiested", id);
 
         ImageDTO imageDTO = imageService.findById(id);
 
@@ -49,13 +44,5 @@ public class ImageDownloadController {
                 response.getOutputStream().write(stream.readAllBytes());
             }
         }
-
-        return;
-    }
-
-    @GetMapping
-    public void test(HttpServletResponse response) throws IOException {
-        log.info("Test");
-        response.getWriter().write("Test");
     }
 }
