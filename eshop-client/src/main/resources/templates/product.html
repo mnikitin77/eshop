@@ -50,8 +50,11 @@
 						th:each="image: ${product.images}"
 						class="single-prd-item">
 						
-						<img class="img-fluid" 
+						<!-- <img class="img-fluid" 
 							th:src="@{/image/download/{id}(id=${image.id})}" 
+							th:alt="${image.description} ? image.description : 'No description provided'"> -->
+						<img class="img-fluid" 
+							th:src="@{{img}/image/{id}(id=${image.id}, img = ${image_service})}" 
 							th:alt="${image.description} ? image.description : 'No description provided'">
 					</div>					
 				</div>
@@ -59,8 +62,11 @@
 				<div th:if="${product.images.size()} > 1" class="col-lg-6">
 					<div class="s_Product_carousel">
 						<div th:each="image: ${product.images}" class="single-prd-item">
-							<img class="img-fluid" 
+							<!-- <img class="img-fluid" 
 								th:src="@{/image/download/{id}(id=${image.id})}" 
+								th:alt="${image.description} ? image.description : 'No description provided'"> -->
+							<img class="img-fluid" 
+							th:src="@{{img}/image/{id}(id=${image.id}, img = ${image_service})}" 
 								th:alt="${image.description} ? image.description : 'No description provided'">
 						</div>					
 					</div>

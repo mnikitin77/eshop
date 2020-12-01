@@ -6,6 +6,8 @@ import com.mvnikitin.eshop.dto.ShoppingCart;
 import com.mvnikitin.eshop.model.ICategoryCount;
 import com.mvnikitin.eshop.repositories.BrandCountRepository;
 import com.mvnikitin.eshop.repositories.CategoryCountRepository;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
@@ -21,13 +23,13 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class EshopCliControllerAdvice {
 
-    CategoryCountRepository categoryCountRepository;
-    BrandCountRepository brandCountRepository;
+    private CategoryCountRepository categoryCountRepository;
+    private BrandCountRepository brandCountRepository;
+
+    private EurekaClient eureka;
 
     @Value("${eshop.image_default}")
     String defaultImageName;
-    @Value("${eshop.default_user_role}")
-    String defaultUserRole;
     @Value("${eshop.default_items_per_page}")
     Integer defaultItemsPerPage;
     @Value("${eshop.default_sort_by}")
@@ -43,6 +45,11 @@ public class EshopCliControllerAdvice {
     public void setCategoryCountRepository(
             CategoryCountRepository categoryCountRepository) {
         this.categoryCountRepository = categoryCountRepository;
+    }
+
+    @Autowired
+    public void setEureka(EurekaClient eureka) {
+        this.eureka = eureka;
     }
 
     @Autowired
@@ -62,6 +69,10 @@ public class EshopCliControllerAdvice {
 
     @ModelAttribute
     public void addAttributes(Model model) {
+
+        InstanceInfo server = eureka.getNextServerFromEureka("GATEWAY", false);
+        model.addAttribute("image_service", server.getHomePageUrl() + "image-service");
+
         model.addAttribute("default_image_name",defaultImageName);
         model.addAttribute("default_items_number",defaultItemsPerPage);
         model.addAttribute("default_sort_by", defaultSortBy);
