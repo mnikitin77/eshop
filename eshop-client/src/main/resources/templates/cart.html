@@ -57,11 +57,6 @@
                                         <div class="media">
                                             <div class="d-flex" th:with="image = ${prod.getPrimaryImage()}">
                                                 <img th:if="${image} == null" class="img-fluid" th:src="@{/img/} + ${default_image_name}" alt="No image provided" width="50px">
-                                                <!-- <img class="img-fluid" 
-                                                    th:if="${image} != null" 									
-                                                    th:src="@{/image/download/{id}(id=${image.id})}" 
-                                                    th:alt="${image.description} ? image.description : 'No description provided'"
-                                                        width="50px"> -->
                                                 <img class="img-fluid" 
                                                     th:if="${image} != null" 									
                                                     th:src="@{{img}/image/{id}(id=${image.id}, img = ${image_service})}" 
