@@ -22,13 +22,32 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
+        <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
     </properties>
 
     <modules>
         <module>eshop-db</module>
+        <module>eshop-dao</module>
         <module>eshop-common</module>
         <module>eshop-admin</module>
         <module>eshop-client</module>
+        <module>eshop-cloud-config</module>
+        <module>eshop-cloud-discovery</module>
+        <module>eshop-cloud-gateway</module>
+        <module>eshop-image-download-service</module>
+        <module>eshop-cloud-image</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

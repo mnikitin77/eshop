@@ -1,0 +1,3 @@
+com\mvnikitin\eshop\services\ImageDownloadService.class
+com\mvnikitin\eshop\services\ImageDownloadServiceImpl.class
+com\mvnikitin\eshop\controllers\ImageDownloadController.class
