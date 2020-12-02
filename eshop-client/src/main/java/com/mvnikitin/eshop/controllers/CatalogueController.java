@@ -2,8 +2,9 @@ package com.mvnikitin.eshop.controllers;
 
 import com.mvnikitin.eshop.dto.CatalogueFilter;
 import com.mvnikitin.eshop.dto.ProductDTO;
-import com.mvnikitin.eshop.services.ProductService;
+import com.mvnikitin.eshop.services.ProductServicePaged;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,10 @@ import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/shop")
-@SessionAttributes(value = {"filter", "cart"})
+@SessionAttributes(value = "filter")
 public class CatalogueController {
 
-    private ProductService productService;
+    private ProductServicePaged productService;
 
     @Value("${eshop.default_items_per_page}")
     Integer defaultItemsPerPage;
@@ -33,7 +34,9 @@ public class CatalogueController {
     BigDecimal defaultMaxPrice;
 
     @Autowired
-    public void setProductService(ProductService productService) {
+
+    @Qualifier("productServicePaged")
+    public void setProductService(ProductServicePaged productService) {
         this.productService = productService;
     }
 
@@ -46,13 +49,14 @@ public class CatalogueController {
             filter.setMaxPrice(defaultMaxPrice);
             filter.setMinPrice(defaultMinPrice);
             filter.setRows(defaultItemsPerPage);
+            filter.setCurrent(1);
             filter.setSortBy(defaultSortBy);
         }
 
         Page<ProductDTO> products = productService.getItemsByPage(
                 filter.getMinPrice() != null? filter.getMinPrice() : defaultMinPrice,
                 filter.getMaxPrice() != null? filter.getMaxPrice() : defaultMaxPrice,
-                defaultPage, //TODO --> Сделать потом постраничный вывод
+                filter.getCurrent() != null? filter.getCurrent() : defaultPage,
                 filter.getRows() != null? filter.getRows() : defaultItemsPerPage,
                 filter.getSortBy() != null? filter.getSortBy() : defaultSortBy,
                 null);
@@ -70,7 +74,7 @@ public class CatalogueController {
         Page<ProductDTO> products = productService.getItemsByPage(
                 filter.getMinPrice() != null? filter.getMinPrice() : defaultMinPrice,
                 filter.getMaxPrice() != null? filter.getMaxPrice() : defaultMaxPrice,
-                defaultPage, //TODO --> Сделать потом постраничный вывод
+                filter.getCurrent() != null? filter.getCurrent() : defaultPage,
                 filter.getRows() != null? filter.getRows() : defaultItemsPerPage,
                 filter.getSortBy() != null? filter.getSortBy() : defaultSortBy,
                 id);
@@ -78,6 +82,14 @@ public class CatalogueController {
         model.addAttribute("products", products);
 
         return "catalogue";
+    }
+
+    @GetMapping("/category/page/{p}")
+    public  String showByCategory(@PathVariable(value = "p") Integer p,
+                                  @ModelAttribute("filter")  CatalogueFilter filter) {
+        filter.setCurrent(p);
+        filter.setApplied(true);
+        return "redirect:/shop";
     }
 
     @PostMapping
@@ -93,11 +105,9 @@ public class CatalogueController {
 
     @GetMapping("/reset")
     public String resetFilter(
-            @ModelAttribute("filter")  CatalogueFilter filter,
-            Model model) {
+            @ModelAttribute("filter")  CatalogueFilter filter) {
 
         filter.setApplied(false);
-
         return "redirect:/shop";
     }
 }

@@ -39,7 +39,8 @@
 
         <dependency>
             <groupId>com.mvnikitin</groupId>
-            <artifactId>eshop-db</artifactId>
+<!--            <artifactId>eshop-db</artifactId>-->
+            <artifactId>eshop-dao</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

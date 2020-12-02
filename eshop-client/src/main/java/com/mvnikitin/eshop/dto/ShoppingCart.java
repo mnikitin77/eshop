@@ -5,19 +5,14 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Data
 public class ShoppingCart implements Serializable {
 
     private static final long serialVersionUID = 7737722188898346728L;
 
-    private Set<LineItem> items = new HashSet<>();
-    private List<LineItem> itemsForUpdate;
-
-    public Set<LineItem> getItems() {
-        return items;
-    }
+    private Map<LineItem, LineItem> items = new HashMap<>();
+    protected List<LineItem> itemsForUpdate;
 
     public void removeItem(ProductDTO product) {
         LineItem item = new LineItem(product);
@@ -33,18 +28,13 @@ public class ShoppingCart implements Serializable {
         addOrModifyItem(item, quantity);
     }
 
-    public void addOrModifyItem(LineItem item, Integer quantity) {
-        Integer previousQuantity = items.stream()
-                .filter(i -> i.equals(item))
-                .map(i -> i.getQuantity())
-                .reduce((res, i) -> i).orElse(0);
 
-        // Previous item has the outdated quantity value
-        // (quantity is not used in equals() and hashcode() implementation).
-        if (items.remove(item)) {
-            item.setQuantity(previousQuantity + quantity);
+    public void addOrModifyItem(LineItem item, Integer quantity) {
+        LineItem oldItem = items.get(item);
+        if (oldItem != null) {
+            item.setQuantity(oldItem.getQuantity() + quantity);
         }
-        items.add(item);
+        items.put(item, item);
     }
 
     public void clear() {
@@ -55,23 +45,35 @@ public class ShoppingCart implements Serializable {
         return items.size();
     }
 
+    public List<LineItem> getItems() {
+        List<LineItem> lineItems = new ArrayList(items.values());
+        lineItems.sort(Comparator.comparing(i -> i.getProduct().getName()));
+        return lineItems;
+    }
+
     public BigDecimal getTotal() {
-        return items.stream()
+        return items.values().stream()
                 .map(item -> item.getTotal())
                 .reduce((sum, itemTotal) ->
                         sum.add(itemTotal)).orElse(BigDecimal.valueOf(0));
     }
 
+    public void update() {
+        for (LineItem i: itemsForUpdate) {
+            if (i.getQuantity().equals(Integer.valueOf(0))) {
+                items.remove(i);
+            } else {
+                items.put(i, i);
+            }
+        }
+    }
+
+//    It's a getter for the itemsForUpdate field and
+//    it is used by Thymeleaf to generate the html page.
     public List<LineItem> getItemsForUpdate() {
-        itemsForUpdate = new ArrayList<>(items);
+        itemsForUpdate = new ArrayList<>(items.values());
         itemsForUpdate.sort(
                 Comparator.comparing(i -> i.getProduct().getName()));
         return itemsForUpdate;
-    }
-
-    public void update() {
-        items = items.stream()
-                .filter(item -> item.getQuantity() > 0)
-                .collect(Collectors.toSet());
     }
 }

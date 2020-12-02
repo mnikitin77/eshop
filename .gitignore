@@ -3,6 +3,12 @@ eshop-admin/target/
 eshop-client/target/
 eshop-db/target/
 eshop-common/target/
+eshop-cloud-config/target/
+eshop-cloud-discovery/target/
+eshop-cloud-gateway/target/
+eshop-cloud-image/target/
+eshop-dao/target/
+eshop-image-download-service/target/
 .mvn/wrapper/
 .idea/
 !.mvn/wrapper/maven-wrapper.jar

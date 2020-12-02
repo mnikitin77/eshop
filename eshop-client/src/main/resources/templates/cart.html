@@ -59,7 +59,7 @@
                                                 <img th:if="${image} == null" class="img-fluid" th:src="@{/img/} + ${default_image_name}" alt="No image provided" width="50px">
                                                 <img class="img-fluid" 
                                                     th:if="${image} != null" 									
-                                                    th:src="@{/image/download/{id}(id=${image.id})}" 
+                                                    th:src="@{{img}/image/{id}(id=${image.id}, img = ${image_service})}" 
                                                     th:alt="${image.description} ? image.description : 'No description provided'"
                                                         width="50px">
                                             </div>
@@ -141,7 +141,7 @@
                                     <td>
                                         <div class="checkout_btn_inner d-flex align-items-center">
                                             <a class="gray_btn" th:href="@{/shop}">Continue Shopping</a>
-                                            <a class="primary-btn" href="#">Proceed to checkout</a>
+                                            <a class="primary-btn" th:href="@{/checkout}">Proceed to checkout</a>
                                         </div>
                                     </td>
                                 </tr>
