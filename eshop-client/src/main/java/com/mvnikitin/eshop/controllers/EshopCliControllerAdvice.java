@@ -6,6 +6,10 @@ import com.mvnikitin.eshop.dto.ShoppingCart;
 import com.mvnikitin.eshop.model.ICategoryCount;
 import com.mvnikitin.eshop.repositories.BrandCountRepository;
 import com.mvnikitin.eshop.repositories.CategoryCountRepository;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
@@ -21,8 +25,13 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class EshopCliControllerAdvice {
 
-    CategoryCountRepository categoryCountRepository;
-    BrandCountRepository brandCountRepository;
+    private final static Logger log =
+            LoggerFactory.getLogger(EshopCliControllerAdvice.class);
+
+    private CategoryCountRepository categoryCountRepository;
+    private BrandCountRepository brandCountRepository;
+
+    private EurekaClient eureka;
 
     @Value("${eshop.image_default}")
     String defaultImageName;
@@ -44,6 +53,11 @@ public class EshopCliControllerAdvice {
     }
 
     @Autowired
+    public void setEureka(EurekaClient eureka) {
+        this.eureka = eureka;
+    }
+
+    @Autowired
     public void setBrandCountRepository(BrandCountRepository brandCountRepository) {
         this.brandCountRepository = brandCountRepository;
     }
@@ -60,6 +74,18 @@ public class EshopCliControllerAdvice {
 
     @ModelAttribute
     public void addAttributes(Model model) {
+
+        String imageServiceURL = null;
+
+        try {
+            InstanceInfo server = eureka.getNextServerFromEureka("GATEWAY", false);
+            imageServiceURL = server.getHomePageUrl() + "image-service";
+        } catch (RuntimeException ex) {
+            log.error("Unable to discover GATEWAY url", ex);
+        }
+
+        model.addAttribute("image_service", imageServiceURL);
+
         model.addAttribute("default_image_name",defaultImageName);
         model.addAttribute("default_items_number",defaultItemsPerPage);
         model.addAttribute("default_sort_by", defaultSortBy);

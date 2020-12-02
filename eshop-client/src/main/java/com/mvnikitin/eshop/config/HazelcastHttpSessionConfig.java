@@ -15,7 +15,6 @@ import org.springframework.session.hazelcast.config.annotation.web.http.EnableHa
 
 @EnableHazelcastHttpSession
 @Configuration
-//@ConditionalOnExpression("${eshop.session-storage} == hazelcast")
 @ConditionalOnProperty(value = "eshop.session-storage", havingValue = "hazelcast")
 public class HazelcastHttpSessionConfig {
 

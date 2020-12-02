@@ -13,6 +13,7 @@ public class CatalogueFilter implements Serializable {
     private BigDecimal minPrice;
     private BigDecimal maxPrice;
     private Integer rows;
+    private Integer current;
     private String sortBy;
 
     private boolean isApplied;
