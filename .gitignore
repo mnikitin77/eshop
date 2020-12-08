@@ -9,6 +9,7 @@ eshop-cloud-gateway/target/
 eshop-cloud-image/target/
 eshop-dao/target/
 eshop-image-download-service/target/
+eshop-products-loader/target/
 .mvn/wrapper/
 .idea/
 !.mvn/wrapper/maven-wrapper.jar
