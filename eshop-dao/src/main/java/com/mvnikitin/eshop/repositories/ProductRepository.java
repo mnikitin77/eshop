@@ -16,11 +16,6 @@ public interface ProductRepository  extends JpaRepository<Product, Integer> {
     List<Product> findAllByIsActiveTrue();
     List<Product> findAllByCategoryIdAndIsActiveTrue(Integer id, Sort sort);
 
-    Page<Product> findByIsActiveTrue(Pageable pageable);
-
-    Page<Product> findByCategoryIdAndIsActiveTrue(Integer id,
-                                                  Pageable pageable);
-
     Page<Product> findByIsActiveTrueAndPriceBetween(
                                                 BigDecimal priceMin,
                                                 BigDecimal priceMax,

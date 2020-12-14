@@ -11,8 +11,11 @@ import java.util.Set;
 public class User {
 
     @Id
-    @Column(columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "user_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "user_id_seq",
+            sequenceName = "user_id_seq",
+            allocationSize = 1)
     private Integer id;
 
     @Column

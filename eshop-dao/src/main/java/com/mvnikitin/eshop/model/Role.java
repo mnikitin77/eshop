@@ -10,8 +10,11 @@ import javax.persistence.*;
 public class Role {
 
     @Id
-    @Column(columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "role_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "role_id_seq",
+            sequenceName = "role_id_seq",
+            allocationSize = 1)
     private Integer id;
 
     @Column

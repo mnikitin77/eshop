@@ -11,8 +11,11 @@ import javax.persistence.*;
 public class Image {
 
     @Id
-    @Column(columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "image_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "image_id_seq",
+            sequenceName = "image_id_seq",
+            allocationSize = 1)
     private Integer id;
 
     @Column
