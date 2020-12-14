@@ -1,7 +1,6 @@
 package com.mvnikitin.eshop.services;
 
 import com.mvnikitin.eshop.EshopClientApplication;
-import com.mvnikitin.eshop.dto.CategoryDTO;
 import com.mvnikitin.eshop.dto.ProductDTO;
 import com.mvnikitin.eshop.mappers.CategoryMapper;
 import com.mvnikitin.eshop.mappers.ProductMapper;
@@ -9,38 +8,21 @@ import com.mvnikitin.eshop.model.Category;
 import com.mvnikitin.eshop.model.Product;
 import com.mvnikitin.eshop.repositories.CategoryRepository;
 import com.mvnikitin.eshop.repositories.ProductRepository;
-import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.*;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @TestPropertySource(locations = "classpath:application-test.properties")
 @RunWith(SpringRunner.class)
