@@ -12,8 +12,11 @@ import java.util.List;
 public class Product {
 
     @Id
-    @Column(columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "product_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "product_id_seq",
+            sequenceName = "product_id_seq",
+            allocationSize = 1)
     private Integer id;
 
     @Column

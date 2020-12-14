@@ -40,7 +40,6 @@ public class ProductServicePagedImpl implements ProductServicePaged {
         this.productMapper = productMapper;
     }
 
-
     @Override
     public Page<ProductDTO> getItemsByPage(BigDecimal priceMin,
                                            BigDecimal priceMax,
