@@ -1,0 +1,3 @@
+com\mvnikitin\eshop\ui_test\EshopAdminUITest.class
+com\mvnikitin\eshop\ui_test\steps\LoginSteps.class
+com\mvnikitin\eshop\ui_test\WebDriverInitializer.class
