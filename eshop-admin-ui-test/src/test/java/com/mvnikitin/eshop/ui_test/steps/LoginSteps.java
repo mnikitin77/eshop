@@ -9,6 +9,11 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,15 +66,20 @@ public class LoginSteps {
     @When("^Open dropdown menu$")
     public void openDropdownMenu() {
         WebElement loggedInUserItem = driver.findElement(By.id("dd_user"));
+
+        // By some misterious reason there must be 2 clicks here...
+        loggedInUserItem.click();
+
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.elementToBeClickable(loggedInUserItem));
+
         loggedInUserItem.click();
     }
 
     @And("^click logout button$")
     public void clickLogoutButton() {
-// This does not work in my case :(
-//        WebElement logout = driver.findElement(By.id("logout"));
-//        logout.click();
-        driver.navigate().to(WebDriverInitializer.getProperty("logout.url"));
+        WebElement logout = driver.findElement(By.id("logout"));
+        logout.click();
     }
 
     @Then("^user logged out$")

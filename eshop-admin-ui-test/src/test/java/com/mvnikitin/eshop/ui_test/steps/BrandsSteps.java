@@ -41,7 +41,7 @@ public class BrandsSteps {
         WebElement contentItem = driver.findElement(By.xpath("/html/body/div/div[1]/ul/li[2]/a"));
         contentItem.click();
 
-        WebElement brandsLink = new WebDriverWait(driver, 5)
+        WebElement brandsLink = new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//*[@id=\"sm_expand_content\"]/li[2]/a")));
         brandsLink.click();

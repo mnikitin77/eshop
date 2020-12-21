@@ -17,6 +17,8 @@ eshop-admin-ui-test/target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+*.log
+
 ### STS ###
 .apt_generated
 .classpath
