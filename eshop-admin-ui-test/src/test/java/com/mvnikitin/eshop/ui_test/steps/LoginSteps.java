@@ -1,25 +1,23 @@
 package com.mvnikitin.eshop.ui_test.steps;
 
 import com.mvnikitin.eshop.ui_test.WebDriverInitializer;
+import com.mvnikitin.eshop.ui_test.pages.IndexPage;
+import com.mvnikitin.eshop.ui_test.pages.LoginPage;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginSteps {
 
     private WebDriver driver;
+
+    private LoginPage loginPage;
+    private IndexPage indexPage;
 
     @Given("^I open a web browser")
     public void iOpenAWebBrowser() {
@@ -29,69 +27,47 @@ public class LoginSteps {
 
     @And("^I navigate to the login page$")
     public void iNavigateToTheLoginPage() {
-        driver.get(WebDriverInitializer.getProperty("index.url"));
-        assertThat(driver.getCurrentUrl())
+        loginPage = new LoginPage(
+                driver, WebDriverInitializer.getProperty("index.url"));
+        assertThat(loginPage.getUrl())
                 .isEqualTo(WebDriverInitializer.getProperty("login.url"));
     }
 
     @Given("^I provide username as \"([^\"]*)\" and password as \"([^\"]*)\"$")
     public void iProvideUsernameAsAndPasswordAs(String username, String password) {
-        WebElement usernameField = driver.findElement(By.name("username"));
-        usernameField.sendKeys(username);
-
-        WebElement passwordField = driver.findElement(By.name("password"));
-        passwordField.sendKeys(password);
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
     }
 
     @When("^I click on login button$")
     public void iClickOnLoginButton() {
-        WebElement element = driver.findElement(By.
-                xpath("/html/body/div/div/div/div/div/form/div[3]/div/button"));
-        element.click();
+        indexPage = loginPage.login();
     }
 
     @Then("^page title must be \"([^\"]*)\"$")
     public void pageTitleMustBe(String title) {
-        assertThat(driver.getTitle()).isEqualTo(title);
+        assertThat(indexPage.getTitle()).isEqualTo(title);
     }
 
     @And("^name should be \"([^\"]*)\"$")
     public void nameShouldBe(String name) {
-        WebElement loggedInUserItem = driver.findElement(By.id("dd_user"));
-        WebElement loggedInuserText =
-                loggedInUserItem.findElement(By.tagName("span"));
-        assertThat(loggedInuserText.getText()).isEqualTo(name);
+        assertThat(indexPage.getLoggedInUser()).isEqualTo(name);
     }
 
     @When("^Open dropdown menu$")
     public void openDropdownMenu() {
-        WebElement loggedInUserItem = driver.findElement(By.id("dd_user"));
-
-        // By some misterious reason there must be 2 clicks here...
-        loggedInUserItem.click();
-
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.elementToBeClickable(loggedInUserItem));
-
-        loggedInUserItem.click();
+        indexPage.openDropDownMenu();
     }
 
-    @And("^click logout button$")
-    public void clickLogoutButton() {
-        WebElement logout = driver.findElement(By.id("logout"));
-        logout.click();
-    }
-
-    @Then("^user logged out$")
+    @Then("^logout$")
     public void userLoggedOut() {
-        assertThat(driver.getCurrentUrl())
+        assertThat(indexPage.logout())
                 .isEqualTo(WebDriverInitializer.getProperty("login.url"));
     }
 
     @Then("^page is the same and error message is \"([^\"]*)\"$")
     public void pageIsTheSameAndErrorMessageIs(String errorMessage) {
-        WebElement errorBlock = driver.findElement(By.id("error_message"));
-        assertThat(errorBlock.getText()).isEqualTo(errorMessage);
+        assertThat(loginPage.getErrorMessage()).isEqualTo(errorMessage);
     }
 
     @After(value = "@logintest")

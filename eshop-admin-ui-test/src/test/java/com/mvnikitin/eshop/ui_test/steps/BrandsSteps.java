@@ -1,18 +1,16 @@
 package com.mvnikitin.eshop.ui_test.steps;
 
 import com.mvnikitin.eshop.ui_test.WebDriverInitializer;
+import com.mvnikitin.eshop.ui_test.pages.BrandPage;
+import com.mvnikitin.eshop.ui_test.pages.BrandsPage;
+import com.mvnikitin.eshop.ui_test.pages.LoginPage;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,92 +18,71 @@ public class BrandsSteps {
 
     private WebDriver driver;
 
+    private BrandsPage brandsPage;
+    private BrandPage brandPage;
+
     @Before(value = "@login_require")
     public void setUp() {
         driver = WebDriverInitializer.getDriver();
         driver.manage().window().maximize();
-        driver.get(WebDriverInitializer.getProperty("index.url"));
 
-        WebElement usernameField = driver.findElement(By.name("username"));
-        usernameField.sendKeys(WebDriverInitializer.getProperty("username"));
-        WebElement passwordField = driver.findElement(By.name("password"));
-        passwordField.sendKeys(WebDriverInitializer.getProperty("password"));
-
-        WebElement element = driver.findElement(By.
-                xpath("/html/body/div/div/div/div/div/form/div[3]/div/button"));
-        element.click();
+        LoginPage loginPage = new LoginPage(driver,
+                WebDriverInitializer.getProperty("index.url"));
+        loginPage.setUsername(WebDriverInitializer.getProperty("username"));
+        loginPage.setPassword(WebDriverInitializer.getProperty("password"));
+        loginPage.login();
     }
 
     @Given("^I open Brands page$")
     public void iOpenBrandsPage() {
-        WebElement contentItem = driver.findElement(By.xpath("/html/body/div/div[1]/ul/li[2]/a"));
-        contentItem.click();
-
-        WebElement brandsLink = new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//*[@id=\"sm_expand_content\"]/li[2]/a")));
-        brandsLink.click();
-
-        assertThat(driver.getCurrentUrl()).isEqualTo(
-                WebDriverInitializer.getProperty("brands.url"));
+        brandsPage = new BrandsPage(driver);
+        assertThat(brandsPage.getUrl()).isEqualTo(
+            WebDriverInitializer.getProperty("brands.url"));
     }
 
     @When("^I click on Add Brand button$")
     public void iClickOnAddBrandButton() {
-        WebElement addBrandButton = driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/div/a"));
-        addBrandButton.click();
+        brandPage = brandsPage.openBrandPage();
     }
 
-    @Then("^New Brand page is open$")
-    public void newBrandPageIsOpen() {
-        assertThat(driver.getCurrentUrl())
-                .isEqualTo(WebDriverInitializer.getProperty("brand.url"));
+    @Then("^New Brand page \"([^\"]*)\" is open$")
+    public void newBrandPageIsOpen(String title) {
+        assertThat(brandPage.getTitle()).isEqualTo(title);
     }
 
     @When("^I provide brand \"([^\"]*)\"$")
     public void iProvideBrand(String newBrand) {
-        WebElement brandInputField = driver.findElement(By.id("brand"));
-        brandInputField.sendKeys(newBrand);
+        brandPage.setBrandName(newBrand);
     }
 
-    @When("^click OK button$")
+    @And("^click OK button and return to Brands page$")
     public void clickOKButton() {
-        WebElement okButton = driver.findElement(By.xpath(
-                "/html/body/div/div[2]/div/div/div[2]/div/div/button"));
-        okButton.click();
-    }
-
-    @Then("^Brands page is open$")
-    public void brandsPageIsOpen() {
-        assertThat(driver.getCurrentUrl())
+        String url = brandPage.ok();
+        assertThat(url)
                 .isEqualTo(WebDriverInitializer.getProperty("brands.url"));
     }
 
-    @Then("^new brand is in the list \"([^\"]*)\"$")
-    public void newBrandIsInTheList(String newBrand) {
-        WebElement searchField = driver.findElement(By.xpath(
-                "//*[@id=\"brandstable_filter\"]/label/input"));
-        searchField.sendKeys(newBrand);
-        WebElement searchButton = driver.findElement(By.xpath("//*[@id=\"brandstable_filter\"]/button[1]"));
-        searchButton.click();
+    @Then("^new brand is on the list \"([^\"]*)\"$")
+    public void newBrandIsOnTheList(String newBrand) {
+        boolean isPresent = brandsPage.isBrandPresent(newBrand);
+        brandsPage.resetTableFilter();
+        brandsPage.deleteBrand(newBrand);
+        assertThat(isPresent).isEqualTo(true);
+    }
 
-        List<WebElement> rowColumns = driver.findElements(By.tagName("td"));
+    @When("^I find the brand \"([^\"]*)\" and I click the Edit button$")
+    public void iFindTheBrandAndIClickTheEditButton(String oldBrand) {
+        brandPage = brandsPage.editBrand(oldBrand);
+    }
 
-        boolean isFound = false;
+    @And("^I see the current brand \"([^\"]*)\"$")
+    public void iSeeTheCurrentBrand(String newBrand) {
+        assertThat(brandPage.getBrandName()).isEqualTo(newBrand);
+    }
 
-        for (WebElement e: rowColumns) {
-            if (e.getText().equals(newBrand)) {
-                isFound = true;
-            } else {
-                String classValue = e.getAttribute("class");
-                if (classValue.trim().equals("actions")) {
-                    WebElement deleteButton = e.findElement(By.tagName("button"));
-                    deleteButton.click();
-                }
-            }
-        }
-
-        assert(isFound);
+    @And("I clear the Brand field")
+    public void iClearTheBrandField() {
+        brandPage.clearBrandField();
     }
 
     @After(value = "@login_require")

@@ -12,8 +12,9 @@ Feature: Login
     Then page title must be "<title>"
     And name should be "<name>"
     When Open dropdown menu
-    And click logout button
-    Then user logged out
+#    And click logout button
+#    Then user logged out
+    Then logout
 
     Examples:
       | username | password | name | title |
