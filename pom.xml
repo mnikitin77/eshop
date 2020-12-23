@@ -36,6 +36,7 @@
         <module>eshop-cloud-gateway</module>
         <module>eshop-image-download-service</module>
         <module>eshop-cloud-image</module>
+        <module>eshop-admin-ui-test</module>
     </modules>
 
     <dependencyManagement>
