@@ -54,7 +54,12 @@
                             <td th:if="${user.isBlocked} == false"><span class="badge badge-success">active</span></td>
                             <td th:if="${user.isBlocked} == true"><span class="badge badge-danger">blocked</span></td>
                             <td>  
-                                <a href="#" th:href="@{/user/{id}(id = ${user.id})}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="Edit"><i class="fa fa-fw fa-edit"></i></a>                
+                                <a href="#" th:href="@{/user/{id}(id = ${user.id})}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="Edit"><i class="fa fa-fw fa-edit"></i></a> 
+                                <form th:action="@{/user/{id}/delete(id=${user.id})}" th:method="delete" class="d-inline">
+                                    <button class="btn btn-icon btn-pill btn-danger" data-toggle="tooltip" title="Delete">
+                                        <i class="fa fa-fw fa-trash-alt"></i>
+                                    </button>
+                                </form>               
                             </td>
                         </tr>
                     </tbody>

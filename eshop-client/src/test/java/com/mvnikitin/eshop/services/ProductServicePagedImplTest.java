@@ -6,6 +6,7 @@ import com.mvnikitin.eshop.mappers.ProductMapper;
 import com.mvnikitin.eshop.model.Category;
 import com.mvnikitin.eshop.model.Product;
 import com.mvnikitin.eshop.repositories.ProductRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 @TestPropertySource(locations = "classpath:application-test.properties")
 @RunWith(SpringRunner.class)
 public class ProductServicePagedImplTest {

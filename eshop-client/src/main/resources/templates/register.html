@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+	<head th:replace="fragments/head.html :: cli_head_block(~{::title})">
+		<title>eshop | register</title>
+	</head>
+
+<body>
+
+	<!-- Start Header Area -->
+	<header  th:replace="fragments/header.html :: cli_header_block(${'register'})" class="header_area sticky-header"></header>
+	<!-- End Header Area -->
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Login</h1>
+					<nav class="d-flex align-items-center">
+						<a th:href="@{/}">Home<span class="lnr lnr-arrow-right"></span></a>							
+						<a th:href="@{/login}">Login<span class="lnr lnr-arrow-right"></span></a>
+						<a th:href="@{/register}">Register</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Login Box Area =================-->
+	<section class="login_box_area section_gap">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_form_inner">
+						<h3>Log in to enter</h3>
+						<form class="row login_form" th:action="@{/register}" th:object="${regform}" method="POST">
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="username" name="username" th:field="*{username}" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+							</div>
+							<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="col-md-12 form-group is-invalid">
+                                username error
+							</div>
+							
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="password" name="password" th:field="*{password}" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+							</div>
+							<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="col-md-12 form-group is-invalid">
+                                password error
+							</div>
+
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="repeat_password" name="repeat_password" th:field="*{repeatPassword}" placeholder="Repeat password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Repeat password'">
+							</div>
+							<div th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}" class="col-md-12 form-group is-invalid">
+                                repeat password error
+							</div>
+							<div th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="col-md-12 form-group is-invalid">
+                                repeat password error
+							</div>
+							
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="first_name" name="first_name" th:field="*{firstName}" placeholder="First name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First name'">
+							</div>
+							<div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="col-md-12 form-group is-invalid">
+                                First name error
+							</div>
+
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="middle_name" name="middle_name" th:field="*{middleName}" placeholder="Middle name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Middle name'">
+							</div>
+							<div th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}" class="col-md-12 form-group is-invalid">
+                                Middle name error
+							</div>
+
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="last_name" name="last_name" th:field="*{lastName}" placeholder="Last name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last name'">
+							</div>
+							<div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="col-md-12 form-group is-invalid">
+                                Last name error
+							</div>
+
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="phone" name="phone" th:field="*{phone}" placeholder="Phone" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone'">
+							</div>
+							<div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="col-md-12 form-group is-invalid">
+                                Phone error
+							</div>
+
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="email" name="email" th:field="*{email}" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
+							</div>
+							<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="col-md-12 form-group is-invalid">
+                                Email error
+							</div>
+							
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit" class="primary-btn">Register</button>
+							</div>
+							<div class="col-md-12 form-group">
+								<button type="reset" value="reset" class="default-btn">Reset</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+
+	<!-- start footer Area -->
+	<footer th:replace="fragments/footer.html :: cli_footer_block"></footer>
+	<!-- End footer Area -->
+
+
+	<div th:replace="fragments/scripts.html :: cli_scripts_block"></div>
+
+</body>
+
+</html>

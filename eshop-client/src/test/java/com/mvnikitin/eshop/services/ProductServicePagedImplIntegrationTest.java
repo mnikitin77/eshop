@@ -9,6 +9,7 @@ import com.mvnikitin.eshop.model.Product;
 import com.mvnikitin.eshop.repositories.CategoryRepository;
 import com.mvnikitin.eshop.repositories.ProductRepository;
 import com.netflix.discovery.EurekaClient;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 @TestPropertySource(locations = "classpath:application-test.properties")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = EshopClientApplication.class)
