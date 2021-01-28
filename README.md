@@ -1,4 +1,4 @@
-#eshop
+# eshop
 This is a sample web application which represents a kind of online shop functionality, a simple admin web application and a simple database.
 
 The server side is made with Java, Spring, Spring Boot, Spring Cloud, Thymeleaf, PostgreSQL. The client UI is based on a ready to use html web template. The admin UI is created with help of the BootAdmin framework.
